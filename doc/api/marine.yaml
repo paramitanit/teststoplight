@@ -1,479 +1,2823 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Marine Accuport-API",
-    "version": "v1",
-    "description": "This is a RESTful API and allows user to create, modify,view and cancel the orders. Also user can search the product, download the document and search the document."
-  },
-  "servers": [
-    {
-      "url": "https://api01-uat.shell.com/sd-marine-orders/v1/api"
-    }
-  ],
-  "paths": {
-    "/orders/create": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to create order.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/orderCreateResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/orderCreateResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to easily create a standard sales order considering inputs such as purchase order number, delivery address, delivery instructions and desired products. As a response an order number will be given which can be later utilized in the order details endpoint to get extended information about the created order.",
-        "operationId": "Order Create API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/orderCreateRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/orderCreateRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/fetchOrderList": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to get orderList.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/fetchOrderListResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/fetchOrderListResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to easily list all their sales orders for a specific period of time. There is also the possibility to filter the list, for example by purchase order number.",
-        "operationId": "Order List API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/fetchOrderListRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/fetchOrderListRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/viewOrderDetails": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to get orderDetails.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/viewOrderDetailsResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/viewOrderDetailsResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to receive extended information regarding a specific sales order, such as order status, cut-off times, delivery addresses and instructions, delivery dates and detailed information about the ordered products including quantity, weight, volumes, pricing and much more.",
-        "operationId": "Order Details API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/viewOrderDetailsRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/viewOrderDetailsRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/amendOrder": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to update the existing order.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/orderAmendResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/orderAmendResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to perform multiple types of order amendments before the cut-off time. Some examples of possible amendments are updating delivery instructions, driver instructions and the quantity of ordered products and adding or removing products from the order. Any changes made can be previewed before submitting them.",
-        "operationId": "Order Amend API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/orderAmendRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/orderAmendRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/cancelOrder": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to cancel order.The http status code 200 with order cancel details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/cancelOrderResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/cancelOrderResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows the customer to cancel an existing sales order before the cut-off time.",
-        "operationId": "Order Cancel API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/cancelOrderRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/cancelOrderRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/getMOQ/{productNumber}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The response will be returned MOQ product details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/moqResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/moqResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This API fetches you the details of MOQ product. We need to pass shipTo,soldTo,businessCategory,fields,quantity & unit as Query parameter to this API.",
-        "operationId": "MOQ API",
-        "parameters": [
-          {
-            "name": "shipTo",
-            "in": "query",
-            "description": "The party who receives delivery of the goods. For each registered address, there is a unique ship To assigned. In case of new party a new number to be received from Shell. The list is provided to the customer during the implementation of the API. Min and Max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "soldTo",
-            "in": "query",
-            "description": "The customer who orders the goods or services. The sold-to party is contractually responsible for sales orders. It is provided to the customer during the implementation of the API.Min and Max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "businessCategory",
-            "in": "query",
-            "description": "Combination of sold To, distChannel and division fields combined with an underscore. It is provided to the customer during the implementation of the API. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields",
-            "in": "query",
-            "description": "List of fields requested. Static value.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "quantity",
-            "in": "query",
-            "description": "Quantity ordered. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "unit",
-            "in": "query",
-            "description": "Unit of measure in which the product is sold. Product Search API retrieves the standard unit description of the material. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "productNumber",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "Shell product number with leading zeros. Min and Max length allowed is 18. This is required field."
-        }
-      ]
-    },
-    "/products/markethubsearch": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The response will be returned with product details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/products/productSearchResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/productSearchResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This API fetches you the details of product. We need to pass shipTo,soldTo,businessCategory,query,lang & countryCode as Query parameter to this API.",
-        "operationId": "Product Search API",
-        "parameters": [
-          {
-            "name": "shipTo",
-            "in": "query",
-            "description": "The party who receives delivery of the goods. For each registered address, there is a unique ship To assigned. In case of new party a new number to be received from Shell. The list is provided to the customer during the implementation of the API. Min and max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "soldTo",
-            "in": "query",
-            "description": "The customer who orders the goods or services. The sold-to party is contractually responsible for sales orders. It is provided to the customer during the implementation of the API. Min and max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "businessCategory",
-            "in": "query",
-            "description": "Combination of sold To, distChannel and division fields combined with an underscore. It is provided to the customer during the implementation of the API. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "query",
-            "in": "query",
-            "description": "Query text. Eg. Product code, product name, etc.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "lang",
-            "in": "query",
-            "description": "en: US English, zh_CN: Chinese, th: Thai, ko: Korean, ro: Romanian, sl: Slovenian, hr: Croatian, ms: Malay, uk: Ukrainian, et: Estonian, ar: Arabic, cs: Czech, de: German, en: English, fr: French, el: Greek, hu: Hungarian, it: Italian, ja: Japanese, da: Danish, pl: Polish, zh: Chinese trad., nl: Dutch, no: Norwegian, pt: Portuguese, sk: Slovak, ru: Russian, es: Spanish, tr: Turkish, bg: Bulgarian, lv: Latvian, id: Indonesian",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "countryCode",
-            "in": "query",
-            "description": "Country Code represents the ISO 3166-1 standard Aplha-2 code of the Country (e.g. \"FR\" for France). This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Default = 20. It is recommended to use maximum value of 100. The number of items retrieved on the current page.",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "currentPage",
-            "in": "query",
-            "description": "Start page where the search result shall start the listing of items. Retrieve the number of pages in the search result from the response (total Pages).",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ]
-      }
-    },
-    "/documents/documentSearch/{soldTo}/{orderNumber}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The response will be returned with document details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/documents/documentSearchResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/documentSearchResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This API fetches the details of document. We need to pass order Number as URI parameter to get the document details.",
-        "operationId": "Document Search API"
-      },
-      "parameters": [
-        {
-          "name": "soldTo",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "The number that uniquely identifies the SoldTo for which the doc belong for an order. This is required field."
-        },
-        {
-          "name": "orderNumber",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "The number that uniquely identifies the Order for which Document fetched. Min and max length allowed is 9. This is required field."
-        }
-      ]
-    },
-    "/documents/documentDownload": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "Follow header information about the file type received in binary format.Possible values for file format will be pdf or zip.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "file"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to download billing and delivery documents (once they are available) for a specified order.",
-        "operationId": "Document Download API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/documents/documentDownloadRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/documentDownloadRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "orderCreateRequest": {
-        "includePath": "dataTypes/orders/orderCreateRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderCreateRequest.raml"
-      },
-      "orderCreateResponse": {
-        "includePath": "dataTypes/orders/orderCreateResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderCreateResponse.raml"
-      },
-      "fetchOrderListRequest": {
-        "includePath": "dataTypes/orders/fetchOrderListRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/fetchOrderListRequest.raml"
-      },
-      "fetchOrderListResponse": {
-        "includePath": "dataTypes/orders/fetchOrderListResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/fetchOrderListResponse.raml"
-      },
-      "viewOrderDetailsRequest": {
-        "includePath": "dataTypes/orders/viewOrderDetailsRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/viewOrderDetailsRequest.raml"
-      },
-      "viewOrderDetailsResponse": {
-        "includePath": "dataTypes/orders/viewOrderDetailsResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/viewOrderDetailsResponse.raml"
-      },
-      "orderAmendRequest": {
-        "includePath": "dataTypes/orders/orderAmendRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderAmendRequest.raml"
-      },
-      "orderAmendResponse": {
-        "includePath": "dataTypes/orders/orderAmendResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderAmendResponse.raml"
-      },
-      "cancelOrderRequest": {
-        "includePath": "dataTypes/orders/cancelOrderRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/cancelOrderRequest.raml"
-      },
-      "cancelOrderResponse": {
-        "includePath": "dataTypes/orders/cancelOrderResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/cancelOrderResponse.raml"
-      },
-      "moqResponse": {
-        "includePath": "dataTypes/orders/moqResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/moqResponse.raml"
-      },
-      "productSearchResponse": {
-        "includePath": "dataTypes/products/productSearchResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/products/productSearchResponse.raml"
-      },
-      "documentSearchResponse": {
-        "includePath": "dataTypes/documents/documentSearchResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/documents/documentSearchResponse.raml"
-      },
-      "documentDownloadRequest": {
-        "includePath": "dataTypes/documents/documentDownloadRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/documents/documentDownloadRequest.raml"
-      }
-    },
-    "responses": {},
-    "parameters": {},
-    "examples": {},
-    "requestBodies": {},
-    "headers": {},
-    "securitySchemes": {},
-    "links": {},
-    "callbacks": {}
-  },
-  "x-annotation-amf-serverDescription": "Test",
-  "x-annotation-amf-servers": [
-    {
-      "url": "https://api01.shell.com/sd-marine-orders/v1/api",
-      "description": "Production"
-    }
-  ],
-  "x-annotation-amf-termsOfService": "https://developer.shell.com/s/terms-of-use",
-  "x-annotation-amf-contact": {
-    "url": "",
-    "name": "Shell Technical Support (API)",
-    "email": "LubesAPI@shell.com"
-  }
-}
+openapi: 3.0.0
+info:
+  title: Place Order API - Customer
+  description: |
+    Shell Lube Analyst Place Order is a RESTful API for customers to place orders. This API give access to place order for customer front office. This API provides various functionalities such as searching or Service center, Customer details, list of Order Status and placing an order in real-time.
+  version: v1
+  contact:
+    url: 'https://developer.shell.com'
+    name: Shell Technical Support (API)
+servers:
+  - url: 'https://api01.shell.com/lang-place-order-customer-api/v1/api/order'
+    description: Prod
+paths:
+  /order:
+    put:
+      operationId: UpdateOrder
+      description: This API is called after entering all the required details form placing an order. This API accepts the request payload in JSON format.
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                orderId: 0
+                orderStatusId: 1
+                siteId: 172
+                countryId: 77
+                customerId: 3821
+                userId: 53047
+                orderPlacedByEmail: ppcustomeradmin@getnada.com
+                orderPlacedByName: CA IPaas
+                orderPlacedByPhone: '9538562822'
+                isCustomerPo: false
+                isSitePo: false
+                isNewPo: true
+                isAlternateDeliveryAddress: false
+                isDeliverToCustomer: false
+                isDeliverToSite: true
+                shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                shellContactName: Shell LubeAnalyst Customer Service
+                shellContactPhone: '1823994497'
+                subscriberId: 53047
+                isExceedQCLimit: false
+                recipientName: CA IPaas
+                alternateDeliveryAddress:
+                  addressId: 0
+                  line1Text: ''
+                  line2Text: ''
+                  line3Text: ''
+                  line4Text: ''
+                  addressVerifiedIndicator: ''
+                  poboxIndicator: ''
+                  cityId: ''
+                  countryId: 77
+                  countryCode: GB
+                  zipcode: ''
+                  postCode: ''
+                  sapaddressLineText: ''
+                  fullAddress: UK
+                  countryName: UK
+                purchaseOrderNumber: '542345'
+                customerName: 'BOCCARD UK LIMITED '
+                shipToCode: '0010394905'
+                soldToCode: '0010394905'
+                deliveryAddress:
+                  addressId: 11238
+                  line1Text: BRINDLEY AVENUE
+                  line2Text: ''
+                  line3Text: SALE
+                  line4Text: Cheshire
+                  line5Text: M33 7BE
+                  addressVerifiedIndicator: null
+                  poboxIndicator: null
+                  cityId: null
+                  countryId: 77
+                  countryCode: GB
+                  zipcode: null
+                  postCode: M33 7BE
+                  sapaddressLineText: null
+                  countryName: UK
+                  cityName: null
+                  fullAddress: |-
+                    BRINDLEY AVENUE,
+                    SALE,
+                    Cheshire,
+                    M33 7BE,
+                    M33 7BE,
+                    UK
+                vatNumber: 'NULL'
+                registeredNumber: 'NULL'
+                companyURL: www.shell.co.uk
+                emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                serviceCentreId: 73
+                materials:
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 77
+                    quantity: 1
+                    materialDescription: LA Additional Bottles packed 10x250 ml
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 80
+                    quantity: 1
+                    materialDescription: LA Additional Bottles packed 10x60 ml
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 83
+                    quantity: 1
+                    materialDescription: LA Additional Bottles packed 6x1000 ml (Aluminium)
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 159
+                    quantity: 1
+                    materialDescription: LA Additional Bottles packed 6x1000 ml (Plastic)
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 160
+                    quantity: 0
+                    materialDescription: LA Additional Bottles packed 6x2000 ml (Plastic)
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 86
+                    quantity: 0
+                    materialDescription: LA Additional Bottles packed 6x500 ml (Glass)
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 158
+                    quantity: 0
+                    materialDescription: LA Additional Bottles packed 6x500 ml (Plastic)
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 165
+                    quantity: 0
+                    materialDescription: LA Plus Industrial (Kit)
+                    quantityLimit: -1
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 163
+                    quantity: 0
+                    materialDescription: LA Plus On & Off Highway (Kit)
+                    quantityLimit: -1
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 141
+                    quantity: 0
+                    materialDescription: LA Sampling Pump
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 164
+                    quantity: 0
+                    materialDescription: LA Standard Industrial (Kit)
+                    quantityLimit: -1
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 162
+                    quantity: 0
+                    materialDescription: LA Standard On & Off Highway (Kit)
+                    quantityLimit: -1
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                  - shellContactEmail: F090411CEE25127157@CustomerServiceAdminEMail.com
+                    shellContactName: Shell LubeAnalyst Customer Service
+                    supplierId: 13
+                    serviceCentreId: 73
+                    shellContactPhone: '1823994497'
+                    dispatchId: null
+                    dispatchDate: null
+                    dispatchNotes: null
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    companyURL: www.shell.co.uk
+                    emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                    courierId: null
+                    orderRefNumber: null
+                    materialId: 146
+                    quantity: 0
+                    materialDescription: LA Tubing 25 m
+                    quantityLimit: 0
+                    quantityDispatched: 0
+                    quantityToDispatch: 0
+                    quantityRemaining: 0
+                totalQuantity: 4
+                siteName: BOCCARD UK LTD
+                contactName: CA IPaas
+                contactEmail: ppcustomeradmin@getnada.com
+                contactPhone: ''
+                serviceCentreName: (LUKG) United Kingdom (UK)
+                countryName: UK
+      responses:
+        '200':
+          description: Once the order is placed the response will be returned with order id and order details in JSON format. The http status code 200 with order details in the response body would indicate the API call is successful.
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    orderId: 9304
+                    orderIDNumber: 0
+                    orderDate: '2020-12-31T13:51:58.5359584Z'
+                    orderStatusId: 2
+                    countryId: 77
+                    countryName: null
+                    serviceCentreId: null
+                    serviceCentreName: null
+                    vendorName: null
+                    customerId: 3821
+                    siteId: 0
+                    userId: 53047
+                    isCustomerPo: false
+                    isSitePo: false
+                    isNewPo: true
+                    purchaseOrderNumber: '542345'
+                    subscriberPhone: null
+                    subscriberId: 53047
+                    contactName: CA IPaas
+                    subscriberEmail: null
+                    isDeliverToCustomer: false
+                    isDeliverToSite: true
+                    deliveryAddress: null
+                    isAlternateDeliveryAddress: false
+                    alternateDeliveryAddress: null
+                    specialInstruction: null
+                    orderPlacedByName: CA IPaas
+                    orderPlacedByPhone: '9538562822'
+                    orderPlacedByEmail: ppcustomeradmin@getnada.com
+                    materials:
+                      - shellContactEmail: null
+                        shellContactName: null
+                        shellContactPhone: null
+                        registeredNumber: null
+                        vatNumber: null
+                        companyURL: null
+                        emailDisclaimer: null
+                        supplierId: 0
+                        supplierName: null
+                        dispatchId: null
+                        dispatchDate: null
+                        dispatchNotes: null
+                        courierId: null
+                        orderRefNumber: null
+                        materialId: 77
+                        quantity: 1
+                        materialDescription: null
+                        quantityLimit: 0
+                        quantityDispatched: 0
+                        quantityToDispatch: 0
+                        quantityRemaining: 1
+                      - shellContactEmail: null
+                        shellContactName: null
+                        shellContactPhone: null
+                        registeredNumber: null
+                        vatNumber: null
+                        companyURL: null
+                        emailDisclaimer: null
+                        supplierId: 0
+                        supplierName: null
+                        dispatchId: null
+                        dispatchDate: null
+                        dispatchNotes: null
+                        courierId: null
+                        orderRefNumber: null
+                        materialId: 80
+                        quantity: 1
+                        materialDescription: null
+                        quantityLimit: 0
+                        quantityDispatched: 0
+                        quantityToDispatch: 0
+                        quantityRemaining: 1
+                      - shellContactEmail: null
+                        shellContactName: null
+                        shellContactPhone: null
+                        registeredNumber: null
+                        vatNumber: null
+                        companyURL: null
+                        emailDisclaimer: null
+                        supplierId: 0
+                        supplierName: null
+                        dispatchId: null
+                        dispatchDate: null
+                        dispatchNotes: null
+                        courierId: null
+                        orderRefNumber: null
+                        materialId: 83
+                        quantity: 1
+                        materialDescription: null
+                        quantityLimit: 0
+                        quantityDispatched: 0
+                        quantityToDispatch: 0
+                        quantityRemaining: 1
+                      - shellContactEmail: null
+                        shellContactName: null
+                        shellContactPhone: null
+                        registeredNumber: null
+                        vatNumber: null
+                        companyURL: null
+                        emailDisclaimer: null
+                        supplierId: 0
+                        supplierName: null
+                        dispatchId: null
+                        dispatchDate: null
+                        dispatchNotes: null
+                        courierId: null
+                        orderRefNumber: null
+                        materialId: 159
+                        quantity: 1
+                        materialDescription: null
+                        quantityLimit: 0
+                        quantityDispatched: 0
+                        quantityToDispatch: 0
+                        quantityRemaining: 1
+                    isActive: true
+                    customerName: 'BOCCARD UK LIMITED '
+                    siteName: null
+                    soldToCode: null
+                    shipToCode: null
+                    soldToName: null
+                    shipToName: null
+                    subscriberName: Others
+                    contactEmail: ppcustomeradmin@getnada.com
+                    alternateAddressId: null
+                    deliveryAddressId: 11238
+                    comments: null
+                    isExceedQCLimit: false
+                    canAmend: false
+                    canCancel: false
+                    canDispatch: false
+                    recipientName: CA IPaas
+                    recipientPhone: null
+                    shellContactEmail: null
+                    shellContactName: null
+                    shellContactPhone: null
+                    registeredNumber: null
+                    vatNumber: null
+                    companyURL: null
+                    emailDisclaimer: null
+                    totalQuantity: 0
+                    invoiceStatusId: 1
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      operationId: ListOrder
+      description: This API fetches you the List of Order which belongs to a particular Customer. This API accepts the request payload in JSON format.
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                limit: 50
+                offset: 0
+                sortColumn: ''
+                sortOrder: ''
+      responses:
+        '200':
+          description: Once the order is placed the response will be returned with order id and order details in JSON format.The http status code 200 with order details in the response body would indicate the API call is successful.
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    resultData:
+                      - shellContactPhone: null
+                        shellContactName: null
+                        shellContactEmail: null
+                        previousStatusId: null
+                        materialQuantityList:
+                          - shellContactEmail: null
+                            shellContactName: null
+                            supplierId: 1
+                            serviceCentreId: 0
+                            shellContactPhone: null
+                            dispatchId: null
+                            dispatchDate: null
+                            dispatchNotes: null
+                            registeredNumber: null
+                            vatNumber: null
+                            companyURL: null
+                            emailDisclaimer: null
+                            courierId: null
+                            orderRefNumber: '9692'
+                            materialId: 77
+                            quantity: 1
+                            materialDescription: LA Additional Bottles packed 10x250 ml
+                            quantityLimit: 1
+                            quantityDispatched: 0
+                            quantityToDispatch: 0
+                            quantityRemaining: 1
+                          - shellContactEmail: null
+                            shellContactName: null
+                            supplierId: 1
+                            serviceCentreId: 0
+                            shellContactPhone: null
+                            dispatchId: null
+                            dispatchDate: null
+                            dispatchNotes: null
+                            registeredNumber: null
+                            vatNumber: null
+                            companyURL: null
+                            emailDisclaimer: null
+                            courierId: null
+                            orderRefNumber: '9692'
+                            materialId: 80
+                            quantity: 1
+                            materialDescription: LA Additional Bottles packed 10x60 ml
+                            quantityLimit: 1
+                            quantityDispatched: 0
+                            quantityToDispatch: 0
+                            quantityRemaining: 1
+                        materialQuantityCount: 0
+                        companyURL: null
+                        serviceCentreId: null
+                        registeredNumber: null
+                        vatNumber: null
+                        orderRefNumber: '9692'
+                        isCustomerPo: null
+                        isSitePo: null
+                        isNewPo: null
+                        orderDate: '2021-02-08T12:04:30.797'
+                        isActive: false
+                        materialOrderStatus: Cancelled
+                        orderStatusId: 5
+                        customerName: 'CLARKE ENERGY LTD '
+                        siteName: CLARKE ENERGY
+                        poNumber: '542345'
+                        orderPlacedByUserName: iPaas Customer Admin
+                        orderPlacedByUserPhone: null
+                        orderPlacedByUserEmail: ipaasfodev@getnada.com
+                        deliverTo: +@SiteTranslation+
+                        deliverAddress:
+                          addressId: 11630
+                          line1Text: SOUTH BOUNDARY ROAD
+                          line2Text: SENATOR POINT KNOWSLEY IND EST
+                          line3Text: LIVERPOOL
+                          line4Text: Merseyside
+                          line5Text: L33 7RR
+                          addressVerifiedIndicator: null
+                          poboxIndicator: null
+                          cityId: Merseyside
+                          countryId: 77
+                          countryCode: GB
+                          zipcode: L33 7RR
+                          postCode: L33 7RR
+                          sapaddressLineText: null
+                          countryName: UK
+                          cityName: Merseyside
+                          fullAddress: |-
+                            SOUTH BOUNDARY ROAD,
+                            SENATOR POINT KNOWSLEY IND EST,
+                            LIVERPOOL,
+                            Merseyside,
+                            L33 7RR,
+                            L33 7RR,
+                            UK
+                        alternateDeliveryAddress:
+                          addressId: null
+                          line1Text: null
+                          line2Text: null
+                          line3Text: null
+                          line4Text: null
+                          line5Text: null
+                          addressVerifiedIndicator: null
+                          poboxIndicator: null
+                          cityId: null
+                          countryId: 0
+                          countryCode: null
+                          zipcode: null
+                          postCode: null
+                          sapaddressLineText: null
+                          countryName: null
+                          cityName: null
+                          fullAddress: ''
+                        soldTo: '0010396073'
+                        shipTo: null
+                        specialInstruction: null
+                        customerId: 5350
+                        isAlternateDeliveryAddress: false
+                        comments: null
+                        isChecked: false
+                        modifiedDate: '0001-01-01T00:00:00'
+                        isExceedQCLimit: false
+                        customerBlocked: false
+                        siteBlocked: false
+                        canAmend: false
+                        canDispatch: false
+                        canCancel: false
+                        dispatchLists: []
+                        subscriberId: null
+                        subscriberName: null
+                        subscriberEmail: null
+                        subscriberPhone: null
+                        contactName: null
+                        contactEmail: null
+                        recipientName: null
+                        orderContactEmail: null
+                        orderContactPhone: null
+                      - shellContactPhone: null
+                        shellContactName: null
+                        shellContactEmail: null
+                        previousStatusId: null
+                        materialQuantityList:
+                          - shellContactEmail: null
+                            shellContactName: null
+                            supplierId: 1
+                            serviceCentreId: 0
+                            shellContactPhone: null
+                            dispatchId: null
+                            dispatchDate: null
+                            dispatchNotes: null
+                            registeredNumber: null
+                            vatNumber: null
+                            companyURL: null
+                            emailDisclaimer: null
+                            courierId: null
+                            orderRefNumber: '9691'
+                            materialId: 77
+                            quantity: 1
+                            materialDescription: LA Additional Bottles packed 10x250 ml
+                            quantityLimit: 1
+                            quantityDispatched: 0
+                            quantityToDispatch: 0
+                            quantityRemaining: 1
+                          - shellContactEmail: null
+                            shellContactName: null
+                            supplierId: 1
+                            serviceCentreId: 0
+                            shellContactPhone: null
+                            dispatchId: null
+                            dispatchDate: null
+                            dispatchNotes: null
+                            registeredNumber: null
+                            vatNumber: null
+                            companyURL: null
+                            emailDisclaimer: null
+                            courierId: null
+                            orderRefNumber: '9691'
+                            materialId: 80
+                            quantity: 1
+                            materialDescription: LA Additional Bottles packed 10x60 ml
+                            quantityLimit: 1
+                            quantityDispatched: 0
+                            quantityToDispatch: 0
+                            quantityRemaining: 1
+                        materialQuantityCount: 0
+                        companyURL: null
+                        serviceCentreId: null
+                        registeredNumber: null
+                        vatNumber: null
+                        orderRefNumber: '9691'
+                        isCustomerPo: null
+                        isSitePo: null
+                        isNewPo: null
+                        orderDate: '2021-02-08T12:02:02.907'
+                        isActive: false
+                        materialOrderStatus: To Be Dispatched
+                        orderStatusId: 3
+                        customerName: 'CLARKE ENERGY LTD '
+                        siteName: CLARKE ENERGY
+                        poNumber: '542345'
+                        orderPlacedByUserName: iPaas Customer Admin
+                        orderPlacedByUserPhone: null
+                        orderPlacedByUserEmail: ipaasfodev@getnada.com
+                        deliverTo: +@SiteTranslation+
+                        deliverAddress:
+                          addressId: 11630
+                          line1Text: SOUTH BOUNDARY ROAD
+                          line2Text: SENATOR POINT KNOWSLEY IND EST
+                          line3Text: LIVERPOOL
+                          line4Text: Merseyside
+                          line5Text: L33 7RR
+                          addressVerifiedIndicator: null
+                          poboxIndicator: null
+                          cityId: Merseyside
+                          countryId: 77
+                          countryCode: GB
+                          zipcode: L33 7RR
+                          postCode: L33 7RR
+                          sapaddressLineText: null
+                          countryName: UK
+                          cityName: Merseyside
+                          fullAddress: |-
+                            SOUTH BOUNDARY ROAD,
+                            SENATOR POINT KNOWSLEY IND EST,
+                            LIVERPOOL,
+                            Merseyside,
+                            L33 7RR,
+                            L33 7RR,
+                            UK
+                        alternateDeliveryAddress:
+                          addressId: null
+                          line1Text: null
+                          line2Text: null
+                          line3Text: null
+                          line4Text: null
+                          line5Text: null
+                          addressVerifiedIndicator: null
+                          poboxIndicator: null
+                          cityId: null
+                          countryId: 0
+                          countryCode: null
+                          zipcode: null
+                          postCode: null
+                          sapaddressLineText: null
+                          countryName: null
+                          cityName: null
+                          fullAddress: ''
+                        soldTo: '0010396073'
+                        shipTo: null
+                        specialInstruction: null
+                        customerId: 5350
+                        isAlternateDeliveryAddress: false
+                        comments: null
+                        isChecked: false
+                        modifiedDate: '0001-01-01T00:00:00'
+                        isExceedQCLimit: false
+                        customerBlocked: false
+                        siteBlocked: false
+                        canAmend: false
+                        canDispatch: false
+                        canCancel: false
+                        dispatchLists: []
+                        subscriberId: null
+                        subscriberName: null
+                        subscriberEmail: null
+                        subscriberPhone: null
+                        contactName: null
+                        contactEmail: null
+                        recipientName: null
+                        orderContactEmail: null
+                        orderContactPhone: null
+                    count: 2
+        '201':
+          description: |
+            The request has been fulfilled and has resulted in one or more new resources being created.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content: {}
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: |
+            The request could not be completed due to a conflict with the current state of the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  '/order/{orderId}/{custId}':
+    get:
+      operationId: OrderDetails
+      description: This API fetches you the details of the order you have placed. We need to pass OrderId and Customer Id as URI parameter to this API.
+      parameters:
+        - name: orderId
+          description: Order Id to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Order Id to be passed in URL.
+            example: '12345'
+            type: string
+        - name: custId
+          description: Customer Id to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Customer Id to be passed in URL.
+            example: '12345'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Once the order is placed the response will be returned with order id and order details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    shellContactPhone: '9813118844'
+                    shellContactName: null
+                    shellContactEmail: EECD5B78D9F5843668@CustomerServiceAdminEMail.com
+                    previousStatusId: null
+                    materialQuantityList:
+                      - shellContactEmail: EECD5B78D9F5843668@CustomerServiceAdminEMail.com
+                        shellContactName: Shell LubeAnalyst Customer Service
+                        supplierId: 13
+                        serviceCentreId: 0
+                        shellContactPhone: '9813118844'
+                        dispatchId: null
+                        dispatchDate: null
+                        dispatchNotes: null
+                        registeredNumber: null
+                        vatNumber: null
+                        companyURL: null
+                        emailDisclaimer: null
+                        courierId: null
+                        orderRefNumber: '9692'
+                        materialId: 77
+                        quantity: 1
+                        materialDescription: LA Additional Bottles packed 10x250 ml
+                        quantityLimit: 10
+                        quantityDispatched: 0
+                        quantityToDispatch: 0
+                        quantityRemaining: 1
+                      - shellContactEmail: EECD5B78D9F5843668@CustomerServiceAdminEMail.com
+                        shellContactName: Shell LubeAnalyst Customer Service
+                        supplierId: 13
+                        serviceCentreId: 0
+                        shellContactPhone: '9813118844'
+                        dispatchId: null
+                        dispatchDate: null
+                        dispatchNotes: null
+                        registeredNumber: null
+                        vatNumber: null
+                        companyURL: null
+                        emailDisclaimer: null
+                        courierId: null
+                        orderRefNumber: '9692'
+                        materialId: 80
+                        quantity: 1
+                        materialDescription: LA Additional Bottles packed 10x60 ml
+                        quantityLimit: 10
+                        quantityDispatched: 0
+                        quantityToDispatch: 0
+                        quantityRemaining: 1
+                    materialQuantityCount: 2
+                    companyURL: www.shell.co.uk
+                    serviceCentreId: 73
+                    registeredNumber: 'NULL'
+                    vatNumber: 'NULL'
+                    orderRefNumber: '9692'
+                    isCustomerPo: false
+                    isSitePo: false
+                    isNewPo: true
+                    orderDate: '2021-02-08T12:04:30.797'
+                    isActive: true
+                    materialOrderStatus: To Be Dispatched
+                    orderStatusId: 3
+                    customerName: 'CLARKE ENERGY LTD '
+                    siteName: CLARKE ENERGY
+                    poNumber: '542345'
+                    orderPlacedByUserName: iPaas Customer Admin
+                    orderPlacedByUserPhone: '5645645'
+                    orderPlacedByUserEmail: ipaasfodev@getnada.com
+                    deliverTo: Site Address
+                    deliverAddress:
+                      addressId: 11630
+                      line1Text: SOUTH BOUNDARY ROAD
+                      line2Text: SENATOR POINT KNOWSLEY IND EST
+                      line3Text: LIVERPOOL
+                      line4Text: Merseyside
+                      line5Text: null
+                      addressVerifiedIndicator: null
+                      poboxIndicator: null
+                      cityId: Merseyside
+                      countryId: 77
+                      countryCode: GB
+                      zipcode: L33 7RR
+                      postCode: L33 7RR
+                      sapaddressLineText: null
+                      countryName: UK
+                      cityName: Merseyside
+                      fullAddress: |-
+                        SOUTH BOUNDARY ROAD,
+                        SENATOR POINT KNOWSLEY IND EST,
+                        LIVERPOOL,
+                        Merseyside,
+                        L33 7RR,
+                        UK
+                    alternateDeliveryAddress:
+                      addressId: null
+                      line1Text: null
+                      line2Text: null
+                      line3Text: null
+                      line4Text: null
+                      line5Text: null
+                      addressVerifiedIndicator: null
+                      poboxIndicator: null
+                      cityId: null
+                      countryId: 0
+                      countryCode: null
+                      zipcode: null
+                      postCode: null
+                      sapaddressLineText: null
+                      countryName: null
+                      cityName: null
+                      fullAddress: ''
+                    soldTo: '0010396073'
+                    shipTo: '0010396073'
+                    specialInstruction: null
+                    customerId: 5350
+                    isAlternateDeliveryAddress: false
+                    comments: null
+                    isChecked: false
+                    modifiedDate: '2021-02-08T12:04:32.413'
+                    isExceedQCLimit: false
+                    customerBlocked: false
+                    siteBlocked: false
+                    canAmend: true
+                    canDispatch: false
+                    canCancel: true
+                    dispatchLists: []
+                    subscriberId: 53321
+                    subscriberName: iPaas Customer Admin
+                    subscriberEmail: ipaasfodev@getnada.com
+                    subscriberPhone: '5645645'
+                    contactName: iPaas Customer Admin
+                    contactEmail: ipaasfodev@getnada.com
+                    recipientName: iPaas Customer Admin
+                    orderContactEmail: 83EE1D15F1D1424149@OrderContactEmail.com
+                    orderContactPhone: '5684404202'
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  '/order/serviceCentreDetailsByCustomer/{custId}':
+    get:
+      operationId: ServiceCentreDetails
+      description: This API fetches the Servicecentre details of the Customer.Customer Id is passed in the URL as a URI parameter.
+      parameters:
+        - name: custId
+          description: Customer Id to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Customer Id to be passed in URL.
+            example: '12345'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: The API response will be returned with service centre details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    serviceCentreTypeID: 1
+                    permittedToOrder: true
+                    serviceCentreName: (LUKG) United Kingdom (UK)
+                    countryName: UK
+                    serviceCentreId: 73
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /order/default:
+    get:
+      operationId: Default
+      description: This API fetches the Customer details and default values before we call Place Order Request.
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: This API response will be returned with customer details and default values in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    materials: null
+                    customer:
+                      - customerId: 5350
+                        countryId: 77
+                        customerName: 'CLARKE ENERGY LTD '
+                        soldToNumber: '0010396073'
+                        shipToNumber: '0010396073'
+                        phoneNumber: '1384865069'
+                        email: null
+                        creditBlock: false
+                        customerPurchaseOrderNumber: ''
+                        address:
+                          addressId: 11630
+                          line1Text: SOUTH BOUNDARY ROAD
+                          line2Text: SENATOR POINT KNOWSLEY IND EST
+                          line3Text: LIVERPOOL
+                          line4Text: Merseyside
+                          line5Text: L33 7RR
+                          addressVerifiedIndicator: null
+                          poboxIndicator: null
+                          cityId: null
+                          countryId: 77
+                          countryCode: GB
+                          zipcode: null
+                          postCode: L33 7RR
+                          sapaddressLineText: null
+                          countryName: null
+                          cityName: null
+                          fullAddress: |-
+                            SOUTH BOUNDARY ROAD,
+                            SENATOR POINT KNOWSLEY IND EST,
+                            LIVERPOOL,
+                            Merseyside,
+                            L33 7RR,
+                            L33 7RR
+                        isActive: true
+                    sites: null
+                    selectedCustomerId: 0
+                    selectedSiteId: 0
+                    purchaseOrderNumber: null
+                    contactName: null
+                    deliverToCustomer: false
+                    deliveryAddress: null
+                    delivertoAlternate: false
+                    alternateAddress: null
+                    specialInstructions: null
+                    orderPlacedByName: iPaas Customer Admin
+                    orderPlacedByPhone: ''
+                    orderPlacedByEmail: ipaasfodev@getnada.com
+                    userId: 53321
+                    orderStatusId: 1
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /order/getAllOrderStatusList:
+    get:
+      operationId: ListOrderStatus
+      description: This API fetches you the list of Order Status using which you can filter and request the list of orders which belongs to a customer.
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: This API response will be returned with list of order status in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    - orderStatusTranslationId: 1
+                      languageId: 0
+                      orderStatusName: Draft
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 2
+                      languageId: 0
+                      orderStatusName: To Be Approved
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 3
+                      languageId: 0
+                      orderStatusName: To Be Dispatched
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 4
+                      languageId: 0
+                      orderStatusName: Dispatched
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 5
+                      languageId: 0
+                      orderStatusName: Cancelled
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 6
+                      languageId: 0
+                      orderStatusName: Rejected
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 7
+                      languageId: 0
+                      orderStatusName: Discarded
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 8
+                      languageId: 0
+                      orderStatusName: On Hold
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+                    - orderStatusTranslationId: 9
+                      languageId: 0
+                      orderStatusName: Partially Dispatched
+                      orderStatusDescription: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                      translatedBy: null
+                      translatedDate: '0001-01-01T00:00:00'
+                      isDefaultLanguage: false
+                      legacyLubeLanguageTermId: null
+                      legacyMarineLanguageTermId: null
+                      language: null
+                      orderStatusTranslationNavigation: null
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /order/materialByCountryId:
+    get:
+      operationId: MaterialByCountry
+      description: This API fetches you the materials offered to the customer by country. As query parameters we need to pass countryId and CustomerId which we got in the response of Default Order API.
+      parameters:
+        - name: countryId
+          description: Country Id that offers the materials to the customer.
+          required: true
+          in: query
+          schema:
+            description: Country Id that offers the materials to the customer.
+            example: cld
+            type: string
+        - name: customerId
+          description: Customer Id who is offered materials.
+          required: true
+          in: query
+          schema:
+            description: Customer Id who is offered materials.
+            example: ABV123
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: This API response will be returned with list materials offered to customer by that country in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    - shellContactEmail: '******@CustomerServiceAdminEMail.com'
+                      shellContactName: Shell LubeAnalyst Customer Service
+                      supplierId: 13
+                      serviceCentreId: 73
+                      shellContactPhone: 98*****844
+                      dispatchId: null
+                      dispatchDate: null
+                      dispatchNotes: null
+                      registeredNumber: 'NULL'
+                      vatNumber: 'NULL'
+                      companyURL: www.shell.co.uk
+                      emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                      courierId: null
+                      orderRefNumber: null
+                      materialId: 77
+                      quantity: 0
+                      materialDescription: LA  Bottles packed 10x250 ml
+                      quantityLimit: 10
+                      quantityDispatched: 0
+                      quantityToDispatch: 0
+                      quantityRemaining: 0
+                    - shellContactEmail: '*****@CustomerServiceAdminEMail.com'
+                      shellContactName: Shell LubeAnalyst Customer Service
+                      supplierId: 13
+                      serviceCentreId: 73
+                      shellContactPhone: 98*****844
+                      dispatchId: null
+                      dispatchDate: null
+                      dispatchNotes: null
+                      registeredNumber: 'NULL'
+                      vatNumber: 'NULL'
+                      companyURL: www.shell.co.uk
+                      emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                      courierId: null
+                      orderRefNumber: null
+                      materialId: 80
+                      quantity: 0
+                      materialDescription: LA Additional Bottles packed 10x60 ml
+                      quantityLimit: 10
+                      quantityDispatched: 0
+                      quantityToDispatch: 0
+                      quantityRemaining: 0
+                    - shellContactEmail: '******@CustomerServiceAdminEMail.com'
+                      shellContactName: Shell LubeAnalyst Customer Service
+                      supplierId: 13
+                      serviceCentreId: 73
+                      shellContactPhone: 99******7676
+                      dispatchId: null
+                      dispatchDate: null
+                      dispatchNotes: null
+                      registeredNumber: 'NULL'
+                      vatNumber: 'NULL'
+                      companyURL: www.shell.co.uk
+                      emailDisclaimer: 'The material in this email/fax may be confidential, privileged and/or protected by copyright. Use of this email/fax should be limited accordingly. If this email/fax has been sent to you in error, please contact us immediately. This email (fax) is system generated, please do not reply to it. If you need to talk to someone about this email (fax) then please use the contact details above.'
+                      courierId: null
+                      orderRefNumber: null
+                      materialId: 165
+                      quantity: 0
+                      materialDescription: LA Plus Industrial (Kit)
+                      quantityLimit: -1
+                      quantityDispatched: 0
+                      quantityToDispatch: 0
+                      quantityRemaining: 0
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /order/updateStatus:
+    put:
+      operationId: StatusUpdate
+      description: This API Call is used to cancel or update the status of the order. This API will accept request in a JSON format.
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                orderId: '9304'
+                orderStatus: 5
+                comments: Testing
+      responses:
+        '200':
+          description: Once API response will be returned with status of order in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          content:
+            application/json:
+              schema:
+                example:
+                  message: 'true'
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /site:
+    get:
+      operationId: SITE
+      description: This API fetches you the list of sites your customer is associated to. We need to pass CustomerId as a query parameter to this API.
+      parameters:
+        - name: customerId
+          description: Customer Id.
+          required: true
+          in: query
+          schema:
+            description: Customer Id.
+            example: ABV123
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: This API response will be returned with listing of sites customer is associated with in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    - siteId: 203
+                      siteName: CLARKE ENERGY
+                      soldToNumber: '0010396073'
+                      shipToNumber: '0010396073'
+                      creditBlock: false
+                      address:
+                        addressId: 11630
+                        line1Text: SOUTH BOUNDARY ROAD
+                        line2Text: SENATOR POINT KNOWSLEY IND EST
+                        line3Text: LIVERPOOL
+                        line4Text: Merseyside
+                        line5Text: L33 7RR
+                        addressVerifiedIndicator: null
+                        poboxIndicator: null
+                        cityId: null
+                        countryId: 77
+                        countryCode: GB
+                        zipcode: null
+                        postCode: L33 7RR
+                        sapaddressLineText: null
+                        countryName: UK
+                        cityName: null
+                        fullAddress: |-
+                          SOUTH BOUNDARY ROAD,
+                          SENATOR POINT KNOWSLEY IND EST,
+                          LIVERPOOL,
+                          Merseyside,
+                          L33 7RR,
+                          L33 7RR,
+                          UK
+                      sitePurchaseOrderNumber: null
+                      isActive: true
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /common/countries:
+    get:
+      operationId: Countries
+      description: Make this API call if you wish to get the Countries for that customer. This will be helpful when you are entering alternate address while placing the order. We need to pass Customer Id as a query parameter in the URL.
+      parameters:
+        - name: customerId
+          description: Customer Id for whom coutries are to be fetched.
+          required: true
+          in: query
+          schema:
+            description: Customer Id for whom coutries are to be fetched.
+            example: ABV123
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: Lang SH Token.
+          required: false
+          in: header
+          schema:
+            description: Lang SH Token.
+            example: ejisnsf9099df90df90d9f0f
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: This API response will be returned with list of countries customer is associated with in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    - countryId: 77
+                      countryCode: GB
+                      countryName: UK
+                      countryIso2code: null
+                      countrySapcode: null
+                      countryPhoneCode: null
+                      countryConfigurationId: 141
+                      gsapStatus: 1
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    error:
+      description: Models the standard structure for an error response
+      x-amf-examples:
+        example_2:
+          error:
+            errorCode: SERVER ERROR
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The request could not be completed due to an internal error. You may wish to try again
+            errorDescription: Internal server error
+        amf_example_1:
+          error:
+            errorCode: FORBIDDEN
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorDescription: Client does not have access to the selected resource
+        example_1:
+          error:
+            errorCode: UNAUTHORISED
+            errorDateTime: '2018-08-02T16:58:12.121Z'
+            errorDescription: Authorization failed for the request resource
+        amf_example_2:
+          error:
+            errorCode: METHOD NOT ALLOWED
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: Method 'DELETE' not supported for this resource
+            errorDescription: The requested resource does support the request method
+        example_4:
+          error:
+            errorCode: NOT FOUND
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The resource '/customer/12345678' could not be located
+            errorDescription: The requested resource does not exist
+        amf_example_4:
+          error:
+            errorCode: CONFLICT
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The resource '/customer/12345678' could not be deleted
+            errorDescription: The requested resource could not be modified
+        example_0:
+          error:
+            errorCode: BAD REQUEST
+            errorDateTime: '2018-08-02T16:58:12.121Z'
+            errorMessage?: string
+            errorDescription: The required header 'x-correlation-id' was not provided
+        amf_example_3:
+          error:
+            errorCode: BAD GATEWAY
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The downstream server has returned an error message - Could not locate requested resource
+            errorDescription: Downstream service could not complete request
+        example_3:
+          error:
+            errorCode: GATEWAY TIMEOUT
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The downstream server did not return a response in an acceptable time.
+            errorDescription: Timeout has occurred during request to downstream service
+      type: object
+      additionalProperties: true
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          additionalProperties: true
+          required:
+            - errorCode
+            - errorDateTime
+            - errorDescription
+          properties:
+            errorCode:
+              type: string
+            errorDateTime:
+              type: string
+              format: date-time
+            errorMessage:
+              type: string
+            errorDescription:
+              type: string
