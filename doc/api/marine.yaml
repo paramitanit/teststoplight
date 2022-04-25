@@ -1,0 +1,479 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Marine Accuport-API",
+    "version": "v1",
+    "description": "This is a RESTful API and allows user to create, modify,view and cancel the orders. Also user can search the product, download the document and search the document."
+  },
+  "servers": [
+    {
+      "url": "https://api01-uat.shell.com/sd-marine-orders/v1/api"
+    }
+  ],
+  "paths": {
+    "/orders/create": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "This API used to create order.The http status code 200 with order details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/orders/orderCreateResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/orderCreateResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows customer to easily create a standard sales order considering inputs such as purchase order number, delivery address, delivery instructions and desired products. As a response an order number will be given which can be later utilized in the order details endpoint to get extended information about the created order.",
+        "operationId": "Order Create API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": "Can not resolve examples/orders/orderCreateRequest.raml",
+              "schema": {
+                "$ref": "#/components/schemas/orderCreateRequest"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/orders/fetchOrderList": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "This API used to get orderList.The http status code 200 with order details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/orders/fetchOrderListResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/fetchOrderListResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows customer to easily list all their sales orders for a specific period of time. There is also the possibility to filter the list, for example by purchase order number.",
+        "operationId": "Order List API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": "Can not resolve examples/orders/fetchOrderListRequest.raml",
+              "schema": {
+                "$ref": "#/components/schemas/fetchOrderListRequest"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/orders/viewOrderDetails": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "This API used to get orderDetails.The http status code 200 with order details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/orders/viewOrderDetailsResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/viewOrderDetailsResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows customer to receive extended information regarding a specific sales order, such as order status, cut-off times, delivery addresses and instructions, delivery dates and detailed information about the ordered products including quantity, weight, volumes, pricing and much more.",
+        "operationId": "Order Details API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": "Can not resolve examples/orders/viewOrderDetailsRequest.raml",
+              "schema": {
+                "$ref": "#/components/schemas/viewOrderDetailsRequest"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/orders/amendOrder": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "This API used to update the existing order.The http status code 200 with order details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/orders/orderAmendResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/orderAmendResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows customer to perform multiple types of order amendments before the cut-off time. Some examples of possible amendments are updating delivery instructions, driver instructions and the quantity of ordered products and adding or removing products from the order. Any changes made can be previewed before submitting them.",
+        "operationId": "Order Amend API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": "Can not resolve examples/orders/orderAmendRequest.raml",
+              "schema": {
+                "$ref": "#/components/schemas/orderAmendRequest"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/orders/cancelOrder": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "This API used to cancel order.The http status code 200 with order cancel details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/orders/cancelOrderResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/cancelOrderResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows the customer to cancel an existing sales order before the cut-off time.",
+        "operationId": "Order Cancel API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": "Can not resolve examples/orders/cancelOrderRequest.raml",
+              "schema": {
+                "$ref": "#/components/schemas/cancelOrderRequest"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/orders/getMOQ/{productNumber}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The response will be returned MOQ product details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/orders/moqResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/moqResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This API fetches you the details of MOQ product. We need to pass shipTo,soldTo,businessCategory,fields,quantity & unit as Query parameter to this API.",
+        "operationId": "MOQ API",
+        "parameters": [
+          {
+            "name": "shipTo",
+            "in": "query",
+            "description": "The party who receives delivery of the goods. For each registered address, there is a unique ship To assigned. In case of new party a new number to be received from Shell. The list is provided to the customer during the implementation of the API. Min and Max length allowed is 10. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "soldTo",
+            "in": "query",
+            "description": "The customer who orders the goods or services. The sold-to party is contractually responsible for sales orders. It is provided to the customer during the implementation of the API.Min and Max length allowed is 10. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "businessCategory",
+            "in": "query",
+            "description": "Combination of sold To, distChannel and division fields combined with an underscore. It is provided to the customer during the implementation of the API. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "List of fields requested. Static value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "description": "Quantity ordered. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "description": "Unit of measure in which the product is sold. Product Search API retrieves the standard unit description of the material. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "productNumber",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Shell product number with leading zeros. Min and Max length allowed is 18. This is required field."
+        }
+      ]
+    },
+    "/products/markethubsearch": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The response will be returned with product details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/products/productSearchResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/productSearchResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This API fetches you the details of product. We need to pass shipTo,soldTo,businessCategory,query,lang & countryCode as Query parameter to this API.",
+        "operationId": "Product Search API",
+        "parameters": [
+          {
+            "name": "shipTo",
+            "in": "query",
+            "description": "The party who receives delivery of the goods. For each registered address, there is a unique ship To assigned. In case of new party a new number to be received from Shell. The list is provided to the customer during the implementation of the API. Min and max length allowed is 10. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "soldTo",
+            "in": "query",
+            "description": "The customer who orders the goods or services. The sold-to party is contractually responsible for sales orders. It is provided to the customer during the implementation of the API. Min and max length allowed is 10. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "businessCategory",
+            "in": "query",
+            "description": "Combination of sold To, distChannel and division fields combined with an underscore. It is provided to the customer during the implementation of the API. This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Query text. Eg. Product code, product name, etc.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "en: US English, zh_CN: Chinese, th: Thai, ko: Korean, ro: Romanian, sl: Slovenian, hr: Croatian, ms: Malay, uk: Ukrainian, et: Estonian, ar: Arabic, cs: Czech, de: German, en: English, fr: French, el: Greek, hu: Hungarian, it: Italian, ja: Japanese, da: Danish, pl: Polish, zh: Chinese trad., nl: Dutch, no: Norwegian, pt: Portuguese, sk: Slovak, ru: Russian, es: Spanish, tr: Turkish, bg: Bulgarian, lv: Latvian, id: Indonesian",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "countryCode",
+            "in": "query",
+            "description": "Country Code represents the ISO 3166-1 standard Aplha-2 code of the Country (e.g. \"FR\" for France). This is required field.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Default = 20. It is recommended to use maximum value of 100. The number of items retrieved on the current page.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "currentPage",
+            "in": "query",
+            "description": "Start page where the search result shall start the listing of items. Retrieve the number of pages in the search result from the response (total Pages).",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/documents/documentSearch/{soldTo}/{orderNumber}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The response will be returned with document details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
+            "content": {
+              "application/json": {
+                "example": "Can not resolve examples/documents/documentSearchResponse.raml",
+                "schema": {
+                  "$ref": "#/components/schemas/documentSearchResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "This API fetches the details of document. We need to pass order Number as URI parameter to get the document details.",
+        "operationId": "Document Search API"
+      },
+      "parameters": [
+        {
+          "name": "soldTo",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "The number that uniquely identifies the SoldTo for which the doc belong for an order. This is required field."
+        },
+        {
+          "name": "orderNumber",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "The number that uniquely identifies the Order for which Document fetched. Min and max length allowed is 9. This is required field."
+        }
+      ]
+    },
+    "/documents/documentDownload": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Follow header information about the file type received in binary format.Possible values for file format will be pdf or zip.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "file"
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows customer to download billing and delivery documents (once they are available) for a specified order.",
+        "operationId": "Document Download API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": "Can not resolve examples/documents/documentDownloadRequest.raml",
+              "schema": {
+                "$ref": "#/components/schemas/documentDownloadRequest"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "orderCreateRequest": {
+        "includePath": "dataTypes/orders/orderCreateRequest.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderCreateRequest.raml"
+      },
+      "orderCreateResponse": {
+        "includePath": "dataTypes/orders/orderCreateResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderCreateResponse.raml"
+      },
+      "fetchOrderListRequest": {
+        "includePath": "dataTypes/orders/fetchOrderListRequest.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/fetchOrderListRequest.raml"
+      },
+      "fetchOrderListResponse": {
+        "includePath": "dataTypes/orders/fetchOrderListResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/fetchOrderListResponse.raml"
+      },
+      "viewOrderDetailsRequest": {
+        "includePath": "dataTypes/orders/viewOrderDetailsRequest.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/viewOrderDetailsRequest.raml"
+      },
+      "viewOrderDetailsResponse": {
+        "includePath": "dataTypes/orders/viewOrderDetailsResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/viewOrderDetailsResponse.raml"
+      },
+      "orderAmendRequest": {
+        "includePath": "dataTypes/orders/orderAmendRequest.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderAmendRequest.raml"
+      },
+      "orderAmendResponse": {
+        "includePath": "dataTypes/orders/orderAmendResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderAmendResponse.raml"
+      },
+      "cancelOrderRequest": {
+        "includePath": "dataTypes/orders/cancelOrderRequest.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/cancelOrderRequest.raml"
+      },
+      "cancelOrderResponse": {
+        "includePath": "dataTypes/orders/cancelOrderResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/cancelOrderResponse.raml"
+      },
+      "moqResponse": {
+        "includePath": "dataTypes/orders/moqResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/moqResponse.raml"
+      },
+      "productSearchResponse": {
+        "includePath": "dataTypes/products/productSearchResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/products/productSearchResponse.raml"
+      },
+      "documentSearchResponse": {
+        "includePath": "dataTypes/documents/documentSearchResponse.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/documents/documentSearchResponse.raml"
+      },
+      "documentDownloadRequest": {
+        "includePath": "dataTypes/documents/documentDownloadRequest.raml",
+        "$ref": "#/components/schemas/Can not resolve dataTypes/documents/documentDownloadRequest.raml"
+      }
+    },
+    "responses": {},
+    "parameters": {},
+    "examples": {},
+    "requestBodies": {},
+    "headers": {},
+    "securitySchemes": {},
+    "links": {},
+    "callbacks": {}
+  },
+  "x-annotation-amf-serverDescription": "Test",
+  "x-annotation-amf-servers": [
+    {
+      "url": "https://api01.shell.com/sd-marine-orders/v1/api",
+      "description": "Production"
+    }
+  ],
+  "x-annotation-amf-termsOfService": "https://developer.shell.com/s/terms-of-use",
+  "x-annotation-amf-contact": {
+    "url": "",
+    "name": "Shell Technical Support (API)",
+    "email": "LubesAPI@shell.com"
+  }
+}
