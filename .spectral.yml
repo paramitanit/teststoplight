@@ -1,0 +1,583 @@
+# Author Samrat Mitra - SA - Mobility - B2C
+
+formats:
+  - oas3.0
+extends:
+  - "spectral:oas"
+functionsDir: "./function"
+
+functions: [apiRule] 
+
+rules:
+  info-matches-Mobility:
+    description: This is an example rule
+    message: Info must contain Mobility
+    given: $.info
+    recommended: true
+    type: style
+    then:
+      field: title
+      function: pattern
+      functionOptions:
+        match: Mobility
+    severity: warn
+
+  Mobility-openapi-API-Description-Rule:
+    description: Tags must have a description.
+    given: $.tags[*]
+    severity: error
+    then:
+      field: description
+      function: truthy
+
+  Mobility-requestId-required:
+    description: must have a requestId parameters.
+    given: $.paths[*][*]
+    severity: error
+    then:
+      field: parameters
+      function: apiRule
+
+  Mobility-api-home:
+    description: APIs MUST have a root path defined (`/`), to stop forcing all API consumers to visit documentation for basic interactions.
+    severity: warn
+    given: $.paths
+    then:
+      field: /
+      function: truthy
+
+  Mobility-api-home-get:
+    description: APIs root path MUST have a GET defined, otherwise people won't know how to get it.
+    severity: warn
+    given: $.paths[/]
+    then:
+      field: get
+      function: truthy
+
+  Mobility-paths-kebab-case:
+    description: Should paths be kebab-case.
+    message: '{{property}} should be kebab-case (lower case and separated with hyphens)'
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(\/|[a-z0-9-.]+|{[a-zA-Z0-9_]+})+$"
+        
+  Mobility-no-numeric-ids:
+    description: Please avoid exposing IDs as an integer, UUIDs are preferred.
+    severity: error
+    given: $.paths..parameters[*].[?(@property === "name" && (@ === "id" || @.match(/(_id|Id)$/)))]^.schema
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          not:
+            properties:
+              type:
+                const: integer
+          properties:
+            format:
+              const: uuid
+              
+  Mobility-no-http-basic:
+    description: "Consider a more secure alternative to HTTP Basic."
+    message: "HTTP Basic is a pretty insecure way to pass credentials around, please consider an alternative."
+    severity: error
+    given: $.components.securitySchemes[*]
+    then:
+      field: scheme
+      function: pattern
+      functionOptions:
+        notMatch: basic
+
+  Mobiolity-no-x-headers:
+    description: "Please do not use headers with X-"
+    message: "Headers cannot start with X-, so please find a new name for {{property}}. More: https://tools.ietf.org/html/rfc6648"
+    given: "$..parameters.[?(@.in === 'header')].name"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '^(x|X)-'
+
+  Mobility-no-x-response-headers:
+    description: "Please do not use headers with X-"
+    message: "Headers cannot start with X-, so please find a new name for {{property}}. More: https://tools.ietf.org/html/rfc6648"
+    given: "$..headers.*~"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '^(x|X)-'
+
+  Mobility-request-GET-no-body:
+    description: A `GET` request MUST NOT accept a `body` parameter
+    severity: error
+    
+    given: $.paths..get.parameters..in
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "/^body$/"
+
+  Mobility-request-GET-no-body-oas3:
+    description: A `GET` request MUST NOT accept a request body
+    severity: error
+    formats: [oas3]
+    given: $.paths..get.requestBody
+    then:
+      function: undefined
+
+  Mobility-headers-hyphenated-pascal-case:
+    description: All `HTTP` headers MUST use `Hyphenated-Pascal-Case` notation
+    severity: error
+    given: "$..parameters[?(@.in == 'header')].name"
+    message: "'HTTP' headers MUST follow 'Hyphenated-Pascal-Case' notation"
+    type: style
+    then: 
+      function: pattern
+      functionOptions:
+        match: "/^([A-Z][a-z0-9]-)*([A-Z][a-z0-9])+/"
+
+  Mobility-hosts-https-only-oas3:
+    description: "ALL requests MUST go through `https` protocol only"
+    formats: [oas3]
+    severity: error
+    message: "Servers MUST be https and no other protocol is allowed."
+    given: $.servers..url
+    then:
+      function: pattern
+      functionOptions:
+        match: "/^https:/"
+
+  Mobility-request-support-json-oas3:
+    description: Every request SHOULD support `application/json` media type
+    formats: [oas3]
+    severity: warn
+    message: "{{description}}: {{error}}"
+    given: $.paths.[*].requestBody.content[?(@property.indexOf('json') === -1)]^
+    then:
+      function: falsy
+
+
+  "Mobility-openapi-info-contact-name": {
+    "description": "Ensures that all APIs have contact name.",
+    "message": "API must have a contact name available.",
+    "given": "$.info.contact",
+    "severity": "error",
+    "then": {
+      "field": "name",
+      "function": "truthy"
+    }
+  }
+
+  "Mobility-openapi-info-contact-email": {
+    "description": "Ensures that all APIs have contact Email.",
+    "message": "API must have a contact Email available.",
+    "given": "$.info.email",
+    "severity": "error",
+    "then": {
+      "field": "Email",
+      "function": "truthy"
+    }
+  }
+
+  "Mobility-openapi-info-contact-url": {
+    "description": "Ensures that all APIs have contact URL.",
+    "message": "API must have a contact URL available.",
+    "given": "$.info.contact",
+    "severity": "error",
+    "then": {
+      "field": "url",
+      "function": "truthy"
+    }
+  }
+  "Mobility-openapi-title": {
+    "description": "Ensures that all OpenAPIs have a information object title.",
+    "message": "The info object should have a title.",
+    "given": "$.info",
+    "severity": "error",
+    "recommended": true,
+    "type": "style",
+    "formats": [
+      "oas3"
+    ],
+    "then": {
+      "field": "title",
+      "function": "truthy"
+    }
+  }
+
+  # This is a Spectral governance rule to make sure that /api is not used as base path in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+
+  "Mobility-openapi-donotuse-api-base-path": {
+    "description": "Ensures that paths do not use /api as part of the base path.",
+    "message": "You should not use /api as part of your base path.",
+    "severity": "warn",
+    "given": "$.paths.*~",
+    "then": {
+      "function": "pattern",
+      "functionOptions": {
+        "notMatch": "^/api"
+      }
+    }
+  }
+
+  #This is a Spectral governance rule to enforce that OpenAPI info object has a contact url. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+
+  "Mobility-openapis-info-contact-url": {
+    "description": "Ensures that all APIs have contact URL.",
+    "message": "API must have a contact URL available.",
+    "given": "$.info.contact",
+    "severity": "error",
+    "then": {
+      "field": "url",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to enforce that an OpenAPI information object description meet a specific length requirement, making sure that descriptions aren't too long, and provide the precise right amount of information for consumers.. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+
+  "Mobility-info-description-max-length": {
+    "description": "Ensures that all APIs descriptions are under a specific length.",
+    "message": "The info object description should be less than 250 characters.",
+    "given": "$.info",
+    "severity": "error",
+    "recommended": true,
+    "type": "style",
+    "formats": [
+      "oas3"
+    ],
+    "then": {
+      "field": "description",
+      "function": "length",
+      "functionOptions": {
+        "max": 250
+      }
+    }
+  }
+  #This is a Spectral governance rule to make sure that all parameters have a description in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  
+  "Mobility-openapi-parameters-description": {
+    "description": "Ensures that that all parameters have a descriptions.",
+    "message": "Your parameters all need descriptions.",
+    "given": "$.paths.*.*.parameters[?(@.in=='query')]",
+    "then": {
+      "field": "description",
+      "function": "truthy"
+    }
+  }
+#This is a Spectral governance rule to make sure that some words aren't used in parameter description. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+
+  "Mobility-openapi-parameters-description-word-check": {
+    "description": "Ensures that some words aren't used in parameter descriptions.",
+    "message": "Your parameter descriptions can't contain the words poc, test, and temp.",
+    "given": "$.paths.*.*.parameters[?(@.in=='query')].description",
+    "then": {
+      "function": "pattern",
+      "functionOptions": {
+        "notMatch": "\\b(poc|test|temp)\\b"
+      }
+    }
+  }
+  #This is a Spectral governance rule to make sure that all parameters have an in property within an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-parameters-in": {
+    "description": "Ensures that that all parameters have an in property.",
+    "message": "Your parameters all need to have in properties.",
+    "given": "$.paths.*.*.parameters[?(@.in=='query')]",
+    "then": {
+      "field": "in",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that all parameter names are camel case within an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-parameters-name-camel-case": {
+    "description": "Ensures that that all parameter names are camel case.",
+    "message": "Your parameter names should all be camel case.",
+    "given": "$.paths.*.*.parameters[?(@.in=='query')].name",
+    "then": {
+      "field": "name",
+      "function": "casing",
+      "functionOptions": {
+        "type": "camel"
+      }
+    }
+  }
+ #This is a Spectral governance rule to make sure that all parameter aren't too long within an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-parameters-name-length": {
+    "description": "Ensures that that parameter names aren't too long.",
+    "message": "Your parameter names should not be longer than 25 characters.",
+    "given": "$.paths.*.*.parameters[?(@.in=='query')].name",
+    "then": {
+      "field": "summary",
+      "function": "length",
+      "functionOptions": {
+        "max": 25
+      }
+    }
+  }
+  #This is a Spectral governance rule to make sure that all parameters with schema type of array have items defined in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-parameters-schema-type-array": {
+    "description": "Ensures that that all parameters of schema type array have items defined.",
+    "message": "Your parameter schema should have an items property if it is an array.",
+    "given": "$.paths.*.*.parameters[?(@.in=='query')].schema[?(@.type=='array')]",
+    "then": {
+      "field": "items",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that PATCH methods have an application/json media type for the request body in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-request-body-json-media-type-on-patch": {
+    "description": "Ensures that PATCH methods have request bodies.",
+    "message": "Your PATCH methods should have request bodies.",
+    "given": "$.paths.*.patch[requestBody].content",
+    "recommended": true,
+    "severity": "error",
+    "then": {
+      "field": "application/json",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that POST methods have an application/json media type for the request body in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-request-body-json-media-type-on-post": {
+    "description": "Ensures that POST methods have request bodies.",
+    "message": "Your POST methods should have request bodies.",
+    "given": "$.paths.*.post[requestBody].content",
+    "recommended": true,
+    "severity": "error",
+    "then": {
+      "field": "application/json",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that PUT methods have an application/json media type for the request body in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-request-body-json-media-type-on-put": {
+    "description": "Ensures that PUT methods have request bodies.",
+    "message": "Your PUT methods should have request bodies.",
+    "given": "$.paths.*.put[requestBody].content",
+    "recommended": true,
+    "severity": "error",
+    "then": {
+      "field": "application/json",
+      "function": "truthy"
+    }
+  }
+
+#This is a Spectral governance rule to make sure that PATCH methods have a request body in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-request-body-on-patch": {
+    "description": "Ensures that PATCH methods have request bodies.",
+    "message": "Your PATCH methods should have request bodies.",
+    "given": "$.paths.*.patch",
+    "recommended": true,
+    "severity": "error",
+    "then": {
+      "field": "requestBody",
+      "function": "truthy"
+    }
+  }
+#This is a Spectral governance rule to make sure that POST methods have a request body in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-request-body-on-post": {
+    "description": "Ensures that POST methods have request bodies.",
+    "message": "Your POST methods should have request bodies.",
+    "given": "$.paths.*.post",
+    "recommended": true,
+    "severity": "error",
+    "then": {
+      "field": "requestBody",
+      "function": "truthy"
+    }
+  }
+#This is a Spectral governance rule to make sure that PUT methods have a request body in an OpenAPI. Here is a JSON version of the rule that can be applied using this API-driven collection API, or at CLI or CI/CD pipeline.
+  "Mobility-openapi-request-body-on-put": {
+    "description": "Ensures that PUT methods have request bodies.",
+    "message": "Your PUT methods should have request bodies.",
+    "given": "$.paths.*.put",
+    "recommended": true,
+    "severity": "error",
+    "then": {
+      "field": "requestBody",
+      "function": "truthy"
+    }
+  }
+
+#This is a Spectral governance This is a Spectral governance rule to make sure that DELETE methods do not have a response body in an OpenAPI
+  "Mobility-openapi-response-delete-204-no-body": {
+    "description": "Ensures DELETE operations do not have a response body.",
+    "message": "A DELETE operation should not have a response body.",
+    "severity": "error",
+    "given": "$paths.delete.responses.204",
+    "then": {
+      "field": "content",
+      "function": "falsy"
+    }
+  }
+#This is a Spectral governance rule to make sure that DELETE methods all have a 500 status code response with application/json media type in an OpenAPI. 
+  "Mobility-openapi-response-delete-204-problem-json-media-type": {
+    "description": "Ensuring DELETE operations have an application/problem+json media type for 500 responses.",
+    "message": "A DELETE operation should have an application/problem+json media type for 500 response.",
+    "severity": "error",
+    "given": "$paths.delete.responses.500.content",
+    "then": {
+      "field": "application/problem+json",
+      "function": "truthy"
+    }
+  }
+#This is a Spectral governance rule to make sure that DELETE methods all have a 204 status code response in an OpenAPI
+  "Mobility-openapi-response-delete-204-status-code": {
+    "description": "Ensures DELETE operations have a 204 status code response.",
+    "message": "A DELETE operation should have a 204 status code for the response.",
+    "severity": "warn",
+    "formats": [
+      "oas2",
+      "oas3"
+    ],
+    "given": "$.paths[*].delete.responses",
+    "then": {
+      "field": "204",
+      "function": "truthy"
+    }
+  }
+
+#This is a Spectral governance rule to make sure that DELETE methods all have a 500 status code response in an OpenAPI
+  "Mobility-openapi-response-delete-500-status-code": {
+    "description": "Ensures DELETE operations have a 500 status code response.",
+    "message": "A DELETE operation should have a 500 status code for the response.",
+    "severity": "warn",
+    "formats": [
+      "oas2",
+      "oas3"
+    ],
+    "given": "$.paths[*].delete.responses",
+    "then": {
+      "field": "500",
+      "function": "truthy"
+    }
+  }
+#This is a Spectral governance rule to make sure that GET methods all have a 200 status code response with application/json media type in an OpenAPI. 
+  "Mobility-openapi-response-get-200-media-type": {
+    "description": "Ensuring GET operations have an application/json media type for 200 responses.",
+    "message": "A GET operation should have an application/json media type for 200 response.",
+    "severity": "error",
+    "given": "$paths.get.responses.200.content",
+    "then": {
+      "field": "application/json",
+      "function": "truthy"
+    }
+  }
+
+#This is a Spectral governance rule to make sure that GET methods all have a 200 status code response with application/json media type in an OpenAPI. 
+  "Mobility-openapi-response-get-200-status-code": {
+    "description": "Ensures GET operations have a 200 status code response.",
+    "message": "A GET operation should have a 200 status code for the response.",
+    "severity": "warn",
+    "formats": [
+      "oas2",
+      "oas3"
+    ],
+    "given": "$.paths[*].get.responses",
+    "then": {
+      "field": "200",
+      "function": "truthy"
+    }
+  }
+
+  "Mobility-openapi-response-get-500-problem-json-media-type": {
+    "description": "Ensuring GET operations have an application/problem+json media type for 500 responses.",
+    "message": "A GET operation should have an application/problem+json media type for 500 response.",
+    "severity": "error",
+    "given": "$paths.get.responses.500.content",
+    "then": {
+      "field": "application/problem+json",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that GET methods all have a 500 status code response in an OpenAPI.
+  "Mobility-penapi-response-get-500-status-code": {
+    "description": "Ensures GET operations have a 500 status code response.",
+    "message": "A GET operation should have a 500 status code for the response.",
+    "severity": "warn",
+    "formats": [
+      "oas2",
+      "oas3"
+    ],
+    "given": "$.paths[*].get.responses",
+    "then": {
+      "field": "500",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that POST methods all have a 201 status code response with application/json media type in an OpenAPI. 
+  "Mobility-openapi-response-post-201-media-type": {
+    "severity": "error",
+    "description": "POST responses should have a JSON body.",
+    "given": "$paths.post.responses.201.content",
+    "then": {
+      "field": "application/json",
+      "function": "truthy"
+    }
+  }
+  #This is a Spectral governance rule to make sure that POST methods all have a 201 status code response in an OpenAPI
+  
+  "Mobility-openapi-response-post-201-status-code": {
+    "description": "Ensures POST operations have a 201 status code response.",
+    "message": "A POST operation should have a 201 status code for the response.",
+    "severity": "warn",
+    "formats": [
+      "oas3"
+    ],
+    "given": "$.paths[*].post.responses",
+    "then": {
+      "field": "201",
+      "function": "truthy"
+    }
+  }
+
+  #This is a Spectral governance rule to make sure that POST methods all have a 500 status code response in an OpenAPI
+  "Mobility-openapi-response-post-500-status-code": {
+    "description": "Ensures POST operations have a 500 status code response.",
+    "message": "A POST operation should have a 500 status code for the response.",
+    "severity": "warn",
+    "formats": [
+      "oas2",
+      "oas3"
+    ],
+    "given": "$.paths[*].post.responses",
+    "then": {
+      "field": "500",
+      "function": "truthy"
+    }
+  }
+  #This is a Spectral governance rule to make sure that a specific version of OpenAPI is being used.
+  "Mobility-openapi-openapi-version": {
+    "description": "Ensuring that a specific version of OpenAPI is being used.",
+    "message": "You do not have the right version of OpenAPI.",
+    "severity": "error",
+    "given": "$",
+    "then": {
+      "field": "openapi",
+      "function": "pattern",
+      "functionOptions": {
+        "match": "3.0.3"
+      }
+    }
+  }
+
+  # Summary check
+  "Mobility-openapi-operations-summary": {
+    "description": "Ensures that each of the operations for an API have a summary.",
+    "message": "All of your operations need summaries.",
+    "severity": "error",
+    "given": "$.paths.*[get,post,patch,put,delete]",
+    "then": [
+      {
+        "field": "summary",
+        "function": "truthy"
+      }
+    ]
+  }
