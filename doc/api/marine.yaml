@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Marine Accuport-API",
+    "title": "Marine Accuport-API2",
     "version": "v1",
     "description": "This is a RESTful API and allows user to create, modify,view and cancel the orders. Also user can search the product, download the document and search the document."
   },
