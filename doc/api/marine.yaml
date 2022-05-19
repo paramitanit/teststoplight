@@ -1,479 +1,2283 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Marine Accuport-API2",
-    "version": "v1",
-    "description": "This is a RESTful API and allows user to create, modify,view and cancel the orders. Also user can search the product, download the document and search the document."
-  },
-  "servers": [
-    {
-      "url": "https://api01-uat.shell.com/sd-marine-orders/v1/api"
-    }
-  ],
-  "paths": {
-    "/orders/create": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to create order.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/orderCreateResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/orderCreateResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to easily create a standard sales order considering inputs such as purchase order number, delivery address, delivery instructions and desired products. As a response an order number will be given which can be later utilized in the order details endpoint to get extended information about the created order.",
-        "operationId": "Order Create API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/orderCreateRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/orderCreateRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/fetchOrderList": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to get orderList.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/fetchOrderListResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/fetchOrderListResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to easily list all their sales orders for a specific period of time. There is also the possibility to filter the list, for example by purchase order number.",
-        "operationId": "Order List API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/fetchOrderListRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/fetchOrderListRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/viewOrderDetails": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to get orderDetails.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/viewOrderDetailsResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/viewOrderDetailsResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to receive extended information regarding a specific sales order, such as order status, cut-off times, delivery addresses and instructions, delivery dates and detailed information about the ordered products including quantity, weight, volumes, pricing and much more.",
-        "operationId": "Order Details API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/viewOrderDetailsRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/viewOrderDetailsRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/amendOrder": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to update the existing order.The http status code 200 with order details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/orderAmendResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/orderAmendResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to perform multiple types of order amendments before the cut-off time. Some examples of possible amendments are updating delivery instructions, driver instructions and the quantity of ordered products and adding or removing products from the order. Any changes made can be previewed before submitting them.",
-        "operationId": "Order Amend API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/orderAmendRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/orderAmendRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/cancelOrder": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "This API used to cancel order.The http status code 200 with order cancel details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/cancelOrderResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/cancelOrderResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows the customer to cancel an existing sales order before the cut-off time.",
-        "operationId": "Order Cancel API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/orders/cancelOrderRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/cancelOrderRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/orders/getMOQ/{productNumber}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The response will be returned MOQ product details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/orders/moqResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/moqResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This API fetches you the details of MOQ product. We need to pass shipTo,soldTo,businessCategory,fields,quantity & unit as Query parameter to this API.",
-        "operationId": "MOQ API",
-        "parameters": [
-          {
-            "name": "shipTo",
-            "in": "query",
-            "description": "The party who receives delivery of the goods. For each registered address, there is a unique ship To assigned. In case of new party a new number to be received from Shell. The list is provided to the customer during the implementation of the API. Min and Max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "soldTo",
-            "in": "query",
-            "description": "The customer who orders the goods or services. The sold-to party is contractually responsible for sales orders. It is provided to the customer during the implementation of the API.Min and Max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "businessCategory",
-            "in": "query",
-            "description": "Combination of sold To, distChannel and division fields combined with an underscore. It is provided to the customer during the implementation of the API. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields",
-            "in": "query",
-            "description": "List of fields requested. Static value.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "quantity",
-            "in": "query",
-            "description": "Quantity ordered. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "unit",
-            "in": "query",
-            "description": "Unit of measure in which the product is sold. Product Search API retrieves the standard unit description of the material. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "productNumber",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "Shell product number with leading zeros. Min and Max length allowed is 18. This is required field."
-        }
-      ]
-    },
-    "/products/markethubsearch": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The response will be returned with product details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/products/productSearchResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/productSearchResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This API fetches you the details of product. We need to pass shipTo,soldTo,businessCategory,query,lang & countryCode as Query parameter to this API.",
-        "operationId": "Product Search API",
-        "parameters": [
-          {
-            "name": "shipTo",
-            "in": "query",
-            "description": "The party who receives delivery of the goods. For each registered address, there is a unique ship To assigned. In case of new party a new number to be received from Shell. The list is provided to the customer during the implementation of the API. Min and max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "soldTo",
-            "in": "query",
-            "description": "The customer who orders the goods or services. The sold-to party is contractually responsible for sales orders. It is provided to the customer during the implementation of the API. Min and max length allowed is 10. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "businessCategory",
-            "in": "query",
-            "description": "Combination of sold To, distChannel and division fields combined with an underscore. It is provided to the customer during the implementation of the API. This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "query",
-            "in": "query",
-            "description": "Query text. Eg. Product code, product name, etc.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "lang",
-            "in": "query",
-            "description": "en: US English, zh_CN: Chinese, th: Thai, ko: Korean, ro: Romanian, sl: Slovenian, hr: Croatian, ms: Malay, uk: Ukrainian, et: Estonian, ar: Arabic, cs: Czech, de: German, en: English, fr: French, el: Greek, hu: Hungarian, it: Italian, ja: Japanese, da: Danish, pl: Polish, zh: Chinese trad., nl: Dutch, no: Norwegian, pt: Portuguese, sk: Slovak, ru: Russian, es: Spanish, tr: Turkish, bg: Bulgarian, lv: Latvian, id: Indonesian",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "countryCode",
-            "in": "query",
-            "description": "Country Code represents the ISO 3166-1 standard Aplha-2 code of the Country (e.g. \"FR\" for France). This is required field.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Default = 20. It is recommended to use maximum value of 100. The number of items retrieved on the current page.",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "currentPage",
-            "in": "query",
-            "description": "Start page where the search result shall start the listing of items. Retrieve the number of pages in the search result from the response (total Pages).",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ]
-      }
-    },
-    "/documents/documentSearch/{soldTo}/{orderNumber}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The response will be returned with document details in JSON format. The http status code 200 with details in the response body would indicate the API call is successful.",
-            "content": {
-              "application/json": {
-                "example": "Can not resolve examples/documents/documentSearchResponse.raml",
-                "schema": {
-                  "$ref": "#/components/schemas/documentSearchResponse"
-                }
-              }
-            }
-          }
-        },
-        "description": "This API fetches the details of document. We need to pass order Number as URI parameter to get the document details.",
-        "operationId": "Document Search API"
-      },
-      "parameters": [
-        {
-          "name": "soldTo",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "The number that uniquely identifies the SoldTo for which the doc belong for an order. This is required field."
-        },
-        {
-          "name": "orderNumber",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "The number that uniquely identifies the Order for which Document fetched. Min and max length allowed is 9. This is required field."
-        }
-      ]
-    },
-    "/documents/documentDownload": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "Follow header information about the file type received in binary format.Possible values for file format will be pdf or zip.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "file"
-                }
-              }
-            }
-          }
-        },
-        "description": "This endpoint allows customer to download billing and delivery documents (once they are available) for a specified order.",
-        "operationId": "Document Download API",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "example": "Can not resolve examples/documents/documentDownloadRequest.raml",
-              "schema": {
-                "$ref": "#/components/schemas/documentDownloadRequest"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "orderCreateRequest": {
-        "includePath": "dataTypes/orders/orderCreateRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderCreateRequest.raml"
-      },
-      "orderCreateResponse": {
-        "includePath": "dataTypes/orders/orderCreateResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderCreateResponse.raml"
-      },
-      "fetchOrderListRequest": {
-        "includePath": "dataTypes/orders/fetchOrderListRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/fetchOrderListRequest.raml"
-      },
-      "fetchOrderListResponse": {
-        "includePath": "dataTypes/orders/fetchOrderListResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/fetchOrderListResponse.raml"
-      },
-      "viewOrderDetailsRequest": {
-        "includePath": "dataTypes/orders/viewOrderDetailsRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/viewOrderDetailsRequest.raml"
-      },
-      "viewOrderDetailsResponse": {
-        "includePath": "dataTypes/orders/viewOrderDetailsResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/viewOrderDetailsResponse.raml"
-      },
-      "orderAmendRequest": {
-        "includePath": "dataTypes/orders/orderAmendRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderAmendRequest.raml"
-      },
-      "orderAmendResponse": {
-        "includePath": "dataTypes/orders/orderAmendResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/orderAmendResponse.raml"
-      },
-      "cancelOrderRequest": {
-        "includePath": "dataTypes/orders/cancelOrderRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/cancelOrderRequest.raml"
-      },
-      "cancelOrderResponse": {
-        "includePath": "dataTypes/orders/cancelOrderResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/cancelOrderResponse.raml"
-      },
-      "moqResponse": {
-        "includePath": "dataTypes/orders/moqResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/orders/moqResponse.raml"
-      },
-      "productSearchResponse": {
-        "includePath": "dataTypes/products/productSearchResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/products/productSearchResponse.raml"
-      },
-      "documentSearchResponse": {
-        "includePath": "dataTypes/documents/documentSearchResponse.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/documents/documentSearchResponse.raml"
-      },
-      "documentDownloadRequest": {
-        "includePath": "dataTypes/documents/documentDownloadRequest.raml",
-        "$ref": "#/components/schemas/Can not resolve dataTypes/documents/documentDownloadRequest.raml"
-      }
-    },
-    "responses": {},
-    "parameters": {},
-    "examples": {},
-    "requestBodies": {},
-    "headers": {},
-    "securitySchemes": {},
-    "links": {},
-    "callbacks": {}
-  },
-  "x-annotation-amf-serverDescription": "Test",
-  "x-annotation-amf-servers": [
-    {
-      "url": "https://api01.shell.com/sd-marine-orders/v1/api",
-      "description": "Production"
-    }
-  ],
-  "x-annotation-amf-termsOfService": "https://developer.shell.com/s/terms-of-use",
-  "x-annotation-amf-contact": {
-    "url": "",
-    "name": "Shell Technical Support (API)",
-    "email": "LubesAPI@shell.com"
-  }
-}
+openapi: 3.0.0
+info:
+  title: exp-lang-frontoffice-prx-api
+  description: 'Shell LubeAnalyst is a service for oil testing to assure machinery performance. Through the API, users of the LubeAnalyst service can pre-register samples and read completed sample reports.'
+  version: v1
+  contact:
+    url: 'https://developer.shell.com'
+    name: Shell Technical Support (API)
+servers:
+  - url: 'https://api01-uat.shell.com/sd-marine-orders/v1/api'
+    description: Prod
+paths:
+  /register:
+    get:
+      description: This End point is used to get the default registration model which can be used to pass while registering sample. For FO we need to pass the customer id as a parameter for the API.
+      parameters:
+        - name: customerId
+          description: Customer Id to be passed as query Param.
+          required: true
+          in: query
+          schema:
+            description: Customer Id to be passed as query Param.
+            example: '53550'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      responses:
+        '200':
+          description: API will return response in JSON format. This response can be used to pass as request to Register the sample and also to fetch the additional info for the Sample registration. Please note that we need to update the relevant details in the response with respect to your customer and sample information you want to register.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    sampleId: 0
+                    sampleNo: ''
+                    lubeAnalystCode: null
+                    lubeAnalystCodes: null
+                    dateDrawn: '2021-02-23T09:48:46.5411059+00:00'
+                    legacyRlasampleId: null
+                    legacyLasampleId: null
+                    equipmentLife: null
+                    equipmentLifeUnitId: 89
+                    lubricantLife: null
+                    lubricantLifeUnitId: 89
+                    topUpVolume: null
+                    topUpVolumeUnitId: 94
+                    topUpVolumeSinceId: 101
+                    sampleRemarks: null
+                    selectedSiteOrVessel: null
+                    siteVesselNames: null
+                    siteVesselCodes: null
+                    imoNumbers: null
+                    registeredLubricantId: 0
+                    registeredLubricant: null
+                    lubricantInUse: null
+                    selectedOptionAddOnTests: null
+                    optionAddOnTests: null
+                    fuelInUse: null
+                    selectedFuelInUseId: null
+                    fuelSulfurMasPercentage: null
+                    turbochargerCutout: false
+                    linerLifeHours: null
+                    feedRate: null
+                    engineLoadDuringSampling: null
+                    relativeHumidityAtmospheric: null
+                    ambientTemperatureAtmospheric: null
+                    cylinderOilConsumption: null
+                    jacketCoolingWaterOutTemp: null
+                    pistonCrownLifeHours: null
+                    pistonRingLifeHours: null
+                    fuelValveLifeHours: null
+                    preferredDateFormat: mm/dd/yyyy
+                    testSuiteList: null
+                    selectedTestSuiteId: null
+                    isPostPaidTestSuite: false
+                    isSelectedTestSuiteLALite: false
+                    selectedTestSuiteName: null
+                    liquidUnits:
+                      - unitId: 85
+                        unitName: Cubic cm
+                      - unitId: 87
+                        unitName: Gallons (UK)
+                      - unitId: 88
+                        unitName: Gallons (US)
+                      - unitId: 94
+                        unitName: Litres
+                      - unitId: 98
+                        unitName: Millilitres
+                      - unitId: 66
+                        unitName: Quarts
+                      - unitId: 72
+                        unitName: US Fluid Oz
+                    timeUnits:
+                      - unitId: 86
+                        unitName: Days
+                      - unitId: 89
+                        unitName: Hours
+                      - unitId: 90
+                        unitName: Kilometres
+                      - unitId: 97
+                        unitName: Miles
+                      - unitId: 99
+                        unitName: Minutes
+                      - unitId: 100
+                        unitName: Months
+                      - unitId: 65
+                        unitName: Quarters
+                      - unitId: 101
+                        unitName: Since Last Sample
+                      - unitId: 102
+                        unitName: Since Oil Drain
+                      - unitId: 103
+                        unitName: Weeks
+                      - unitId: 104
+                        unitName: Years
+                    topUpVolumeSinceUnits:
+                      - unitId: 86
+                        unitName: Days
+                      - unitId: 89
+                        unitName: Hours
+                      - unitId: 90
+                        unitName: Kilometres
+                      - unitId: 97
+                        unitName: Miles
+                      - unitId: 99
+                        unitName: Minutes
+                      - unitId: 100
+                        unitName: Months
+                      - unitId: 65
+                        unitName: Quarters
+                      - unitId: 101
+                        unitName: Since Last Sample
+                      - unitId: 102
+                        unitName: Since Oil Drain
+                      - unitId: 103
+                        unitName: Weeks
+                      - unitId: 104
+                        unitName: Years
+                    lubricants: null
+                    entityTypeId: 0
+                    entityId: null
+                    adHocSample: false
+                    drawnDuringOilDrain: false
+                    freshOilValueSample: false
+                    isSampleExists: false
+                    isSamplePreregistered: false
+                    isSampleValid: false
+                    equipmentComponentDescription: null
+                    componentList: null
+                    customerId: 4057
+                    applicationType: 0
+                    uploads: null
+                    validationErrors: null
+                    cylinderComponents: null
+                    sampleStatus: null
+                    isComponentActive: false
+                    isLACodeExists: false
+                    isOCMEnabled: false
+                    componentId: 0
+                    labId: null
+                    purchaseOrderNo: null
+                    isActive: false
+                    isCreditBlocked: false
+                    legacySampleNumber: 0
+                    sampleRemarksList: null
+                    sampleDocumentCount: 0
+                    sampleCondition: null
+                    testSuiteType: null
+                    createdBy: null
+                    createdDate: '0001-01-01T00:00:00'
+                    dateRegistered: null
+                    sampleOnHoldReasonId: null
+                    customerName: 'SCHLUMBERGER TECHNOLOGY CORPORATION '
+                    countryId: 0
+                    sampleRegistrationScreenLayoutId: null
+                    sampleRegistrationScreenLayoutName: null
+                    distributionChannelId: 2
+                    dateReceived: null
+                    dateTested: null
+                    dateRetested: null
+                    isCheckForPreRegisteredSample: false
+                    isDuplicateSampleNumber: false
+                    sampleModificationCategoryID: null
+                    isSampleModified: false
+                    maintenanceDescription: null
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      description: 'When the form is complete, and all mandatory fields have been adhered to you can submit the sample.'
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                registeredLubricant:
+                  lubricantId: 472
+                  lubricantName: Shell Mysella S5 N 40
+                lubricantInUse:
+                  lubricantId: 15148
+                  lubricantName: Shell AC Rotair
+                selectedSiteOrVessel:
+                  siteOrVesselId: 5724
+                  entityType: 2
+                  siteOrVesselName: ARIA HEALTH
+                  customerId: 6574
+                  customerName: 'AB ENERGY USA, LLC '
+                  distributionChannelId: 2
+                  siteOrVesselCode: '5724'
+                  imoNumber: null
+                  hyphenatedSiteVesselCode: ARIA HEALTH - 5724
+                  purchaseOrderNumber: null
+                  countryId: 233
+                dateDrawn: '2020-10-14T00:00:00.000Z'
+                timeUnits:
+                  - unitId: 86
+                    unitName: Days
+                  - unitId: 89
+                    unitName: Hours
+                  - unitId: 90
+                    unitName: Kilometres
+                  - unitId: 97
+                    unitName: Miles
+                  - unitId: 99
+                    unitName: Minutes
+                  - unitId: 100
+                    unitName: Months
+                  - unitId: 65
+                    unitName: Quarters
+                  - unitId: 101
+                    unitName: Since Last Sample
+                  - unitId: 102
+                    unitName: Since Oil Drain
+                  - unitId: 103
+                    unitName: Weeks
+                  - unitId: 104
+                    unitName: Years
+                liquidUnits:
+                  - unitId: 85
+                    unitName: Cubic cm
+                  - unitId: 87
+                    unitName: Gallons (UK)
+                  - unitId: 88
+                    unitName: Gallons (US)
+                  - unitId: 94
+                    unitName: Litres
+                  - unitId: 98
+                    unitName: Millilitres
+                  - unitId: 66
+                    unitName: Quarts
+                  - unitId: 72
+                    unitName: US Fluid Oz
+                topUpVolumeSinceUnits:
+                  - unitId: 86
+                    unitName: Days
+                  - unitId: 89
+                    unitName: Hours
+                  - unitId: 90
+                    unitName: Kilometres
+                  - unitId: 97
+                    unitName: Miles
+                  - unitId: 99
+                    unitName: Minutes
+                  - unitId: 100
+                    unitName: Months
+                  - unitId: 65
+                    unitName: Quarters
+                  - unitId: 101
+                    unitName: Since Last Sample
+                  - unitId: 102
+                    unitName: Since Oil Drain
+                  - unitId: 103
+                    unitName: Weeks
+                  - unitId: 104
+                    unitName: Years
+                equipmentLifeUnitId: 89
+                lubricantLifeUnitId: 89
+                topUpVolumeUnitId: 94
+                topUpVolumeSinceId: 101
+                sampleRemarks: {}
+                adHocSample: false
+                drawnDuringOilDrain: false
+                customerId: 6574
+                customerName: 'AB ENERGY USA, LLC '
+                countryId: 233
+                distributionChannelId: 2
+                equipmentComponentDescription:
+                  siteId: 5724
+                  siteName: ARIA HEALTH
+                  vesselName: null
+                  vesselId: 0
+                  isSite: false
+                  isVessel: false
+                  customerId: 6574
+                  componentDescription: Engine - Stationary Gas - ENGINE
+                  laNumber: 01415683/EGN01
+                  rlaNumber: null
+                  componentType: null
+                  componentTypeId: 486
+                  componentID: 1558231
+                  componentName: null
+                  equipmentName: '117'
+                  equipmentDescription: null
+                  equipmentSubDescription: null
+                  isOilConditionMonitoringEnabled: true
+                  defaultTestSuiteId: 0
+                  isComponentActive: true
+                  siteCode: '5724'
+                  vesselCode: null
+                  imoNumber: null
+                  entityType: 0
+                  sampleRegistrationScreenLayoutId: 1
+                  sampleRegistrationScreenLayoutName: null
+                  laNumberEquipmentComponentDescription: 01415683/EGN01 - 117 -  - Engine - Stationary Gas - ENGINE
+                  totalCount: 0
+                  entityTypeId: 2
+                  equipmentId: 1124490
+                freshOilValueSample: false
+                maintenanceDescription: ''
+                lubeAnalystCode: 01415683/EGN01
+                selectedTestSuiteId: 420
+                selectedOptionAddOnTests: []
+                sampleNo: '4345343423'
+                fuelInUse: null
+      responses:
+        '200':
+          description: This API response will include the user who registered the sample and the Date Registered as per the LubeAnalyst server.
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    sampleId: 4897649
+                    sampleNo: '4345343423'
+                    lubeAnalystCode: null
+                    lubeAnalystCodes: null
+                    dateDrawn: '2020-10-14T00:00:00'
+                    legacyRlasampleId: null
+                    legacyLasampleId: null
+                    equipmentLife: null
+                    equipmentLifeUnitId: 89
+                    lubricantLife: null
+                    lubricantLifeUnitId: 89
+                    topUpVolume: null
+                    topUpVolumeUnitId: 94
+                    topUpVolumeSinceId: 101
+                    sampleRemarks: null
+                    selectedSiteOrVessel: null
+                    siteVesselNames: null
+                    siteVesselCodes: null
+                    imoNumbers: null
+                    registeredLubricantId: 0
+                    registeredLubricant: null
+                    lubricantInUse: null
+                    selectedOptionAddOnTests: []
+                    optionAddOnTests: null
+                    fuelInUse: null
+                    selectedFuelInUseId: null
+                    fuelSulfurMasPercentage: null
+                    turbochargerCutout: false
+                    linerLifeHours: null
+                    feedRate: null
+                    engineLoadDuringSampling: null
+                    relativeHumidityAtmospheric: null
+                    ambientTemperatureAtmospheric: null
+                    cylinderOilConsumption: null
+                    jacketCoolingWaterOutTemp: null
+                    pistonCrownLifeHours: null
+                    pistonRingLifeHours: null
+                    fuelValveLifeHours: null
+                    preferredDateFormat: null
+                    testSuiteList: null
+                    selectedTestSuiteId: 420
+                    isPostPaidTestSuite: false
+                    isSelectedTestSuiteLALite: false
+                    selectedTestSuiteName: null
+                    liquidUnits: null
+                    timeUnits: null
+                    topUpVolumeSinceUnits: null
+                    lubricants: null
+                    entityTypeId: 2
+                    entityId: 5724
+                    adHocSample: false
+                    drawnDuringOilDrain: false
+                    freshOilValueSample: false
+                    isSampleExists: false
+                    isSamplePreregistered: false
+                    isSampleValid: false
+                    equipmentComponentDescription: null
+                    componentList: null
+                    customerId: null
+                    applicationType: 0
+                    uploads: null
+                    validationErrors: null
+                    cylinderComponents: null
+                    sampleStatus: 2
+                    isComponentActive: false
+                    isLACodeExists: false
+                    isOCMEnabled: false
+                    componentId: 1558231
+                    labId: null
+                    purchaseOrderNo: null
+                    isActive: true
+                    isCreditBlocked: false
+                    legacySampleNumber: 0
+                    sampleRemarksList: null
+                    sampleDocumentCount: 0
+                    sampleCondition: null
+                    testSuiteType: 1
+                    createdBy: ppcustomeradmin@getnada.com
+                    createdDate: '2020-10-13T21:25:13.5959924Z'
+                    dateRegistered: '2020-10-13T21:25:13.5647547Z'
+                    sampleOnHoldReasonId: null
+                    customerName: null
+                    countryId: null
+                    sampleRegistrationScreenLayoutId: null
+                    sampleRegistrationScreenLayoutName: null
+                    distributionChannelId: 2
+                    dateReceived: null
+                    dateTested: null
+                    dateRetested: null
+                    isCheckForPreRegisteredSample: false
+                    isDuplicateSampleNumber: false
+                    sampleModificationCategoryID: null
+                    isSampleModified: false
+                    maintenanceDescription: ''
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /register/additionalInfo: {}
+  '/register/additionalInfo/{samplePreReg}':
+    post:
+      description: 'User should now be presented with a field for gathering all of the sample information which you received at the previous step. Within this form filling you may wish to make further API calls where the user must choose from fields with long lists. For example if the user wishes to choose a Lubricant In Use, you can make a call using a search to find one of LubeAnalysts 15,000 Lubricants.'
+      parameters:
+        - name: samplePreReg
+          description: Is sample pre-registered.
+          required: true
+          in: path
+          schema:
+            description: Is sample pre-registered.
+            example: 'true'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                registeredLubricant: {}
+                lubricantInUse:
+                  lubricantName: ''
+                selectedSiteOrVessel:
+                  siteOrVesselId: 5724
+                  entityType: 2
+                  siteOrVesselName: ARIA HEALTH
+                  customerId: 6574
+                  customerName: 'AB ENERGY USA, LLC '
+                  distributionChannelId: 2
+                  siteOrVesselCode: '5724'
+                  imoNumber: null
+                  hyphenatedSiteVesselCode: ARIA HEALTH - 5724
+                  purchaseOrderNumber: null
+                  countryId: 233
+                dateDrawn: '2020-10-14T00:00:00.000Z'
+                timeUnits:
+                  - unitId: 86
+                    unitName: Days
+                  - unitId: 89
+                    unitName: Hours
+                  - unitId: 90
+                    unitName: Kilometres
+                  - unitId: 97
+                    unitName: Miles
+                  - unitId: 99
+                    unitName: Minutes
+                  - unitId: 100
+                    unitName: Months
+                  - unitId: 65
+                    unitName: Quarters
+                  - unitId: 101
+                    unitName: Since Last Sample
+                  - unitId: 102
+                    unitName: Since Oil Drain
+                  - unitId: 103
+                    unitName: Weeks
+                  - unitId: 104
+                    unitName: Years
+                liquidUnits:
+                  - unitId: 85
+                    unitName: Cubic cm
+                  - unitId: 87
+                    unitName: Gallons (UK)
+                  - unitId: 88
+                    unitName: Gallons (US)
+                  - unitId: 94
+                    unitName: Litres
+                  - unitId: 98
+                    unitName: Millilitres
+                  - unitId: 66
+                    unitName: Quarts
+                  - unitId: 72
+                    unitName: US Fluid Oz
+                topUpVolumeSinceUnits:
+                  - unitId: 86
+                    unitName: Days
+                  - unitId: 89
+                    unitName: Hours
+                  - unitId: 90
+                    unitName: Kilometres
+                  - unitId: 97
+                    unitName: Miles
+                  - unitId: 99
+                    unitName: Minutes
+                  - unitId: 100
+                    unitName: Months
+                  - unitId: 65
+                    unitName: Quarters
+                  - unitId: 101
+                    unitName: Since Last Sample
+                  - unitId: 102
+                    unitName: Since Oil Drain
+                  - unitId: 103
+                    unitName: Weeks
+                  - unitId: 104
+                    unitName: Years
+                equipmentLifeUnitId: 89
+                lubricantLifeUnitId: 89
+                topUpVolumeUnitId: 94
+                topUpVolumeSinceId: 101
+                sampleRemarks: {}
+                adHocSample: false
+                drawnDuringOilDrain: false
+                customerId: 6574
+                customerName: 'AB ENERGY USA, LLC '
+                countryId: 233
+                distributionChannelId: 2
+                equipmentComponentDescription:
+                  siteId: 5724
+                  siteName: ARIA HEALTH
+                  vesselName: null
+                  vesselId: 0
+                  isSite: false
+                  isVessel: false
+                  customerId: 6574
+                  componentDescription: Engine - Stationary Gas - ENGINE
+                  laNumber: 01415683/EGN01
+                  rlaNumber: null
+                  componentType: null
+                  componentTypeId: 486
+                  componentID: 1558231
+                  componentName: null
+                  equipmentName: '117'
+                  equipmentDescription: null
+                  equipmentSubDescription: null
+                  isOilConditionMonitoringEnabled: true
+                  defaultTestSuiteId: 0
+                  isComponentActive: true
+                  siteCode: '5724'
+                  vesselCode: null
+                  imoNumber: null
+                  entityType: 0
+                  sampleRegistrationScreenLayoutId: 1
+                  sampleRegistrationScreenLayoutName: null
+                  laNumberEquipmentComponentDescription: 01415683/EGN01 - 117 -  - Engine - Stationary Gas - ENGINE
+                  totalCount: 0
+                  entityTypeId: 2
+                  equipmentId: 1124490
+                freshOilValueSample: false
+                maintenanceDescription: ''
+                lubeAnalystCode: 01415683/EGN01
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    sampleId: 0
+                    sampleNo: null
+                    lubeAnalystCode: 01415683/EGN01
+                    lubeAnalystCodes: null
+                    dateDrawn: '2020-10-14T00:00:00Z'
+                    legacyRlasampleId: null
+                    legacyLasampleId: null
+                    equipmentLife: null
+                    equipmentLifeUnitId: 89
+                    lubricantLife: null
+                    lubricantLifeUnitId: 89
+                    topUpVolume: null
+                    topUpVolumeUnitId: 94
+                    topUpVolumeSinceId: 101
+                    sampleRemarks:
+                      sampleRemarksId: 0
+                      sampleId: 0
+                      remarks: null
+                      createdBy: null
+                      createdDate: '0001-01-01T00:00:00'
+                      modifiedBy: null
+                      modifiedDate: '0001-01-01T00:00:00'
+                    selectedSiteOrVessel:
+                      siteOrVesselId: 5724
+                      siteOrVesselName: ARIA HEALTH
+                      siteOrVesselCode: '5724'
+                      vesselImoNumber: null
+                      purchaseOrderNumber: null
+                      entityType: 2
+                      siteVesselCustomer: null
+                      siteVesselComponent: null
+                      customerName: 'AB ENERGY USA, LLC '
+                      customerId: 6574
+                      siteVesselIdAndEntityType: null
+                      distributionChannelId: null
+                      componentId: null
+                      equipmentComponentDescription: null
+                      laNumber: null
+                      equipmentName: null
+                      componentDescription: null
+                      componentTypeId: null
+                      isComponentActive: null
+                      isOilConditionMonitoringEnabled: null
+                      screenLayoutId: null
+                      registeredLubricantId: 0
+                      registeredLubricant: null
+                      equipmentId: 0
+                    siteVesselNames: null
+                    siteVesselCodes: null
+                    imoNumbers: null
+                    registeredLubricantId: 0
+                    registeredLubricant:
+                      lubricantId: 472
+                      lubricantName: Shell Mysella S5 N 40
+                    lubricantInUse:
+                      lubricantId: 0
+                      lubricantName: ''
+                    selectedOptionAddOnTests: []
+                    optionAddOnTests: null
+                    fuelInUse: null
+                    selectedFuelInUseId: null
+                    fuelSulfurMasPercentage: null
+                    turbochargerCutout: false
+                    linerLifeHours: null
+                    feedRate: null
+                    engineLoadDuringSampling: null
+                    relativeHumidityAtmospheric: null
+                    ambientTemperatureAtmospheric: null
+                    cylinderOilConsumption: null
+                    jacketCoolingWaterOutTemp: null
+                    pistonCrownLifeHours: null
+                    pistonRingLifeHours: null
+                    fuelValveLifeHours: null
+                    preferredDateFormat: null
+                    testSuiteList: []
+                    selectedTestSuiteId: 420
+                    isPostPaidTestSuite: false
+                    isSelectedTestSuiteLALite: false
+                    selectedTestSuiteName: OCM K2 Gas Engines (Natural Gas) (NA)
+                    liquidUnits:
+                      - unitId: 85
+                        unitName: Cubic cm
+                      - unitId: 87
+                        unitName: Gallons (UK)
+                      - unitId: 88
+                        unitName: Gallons (US)
+                      - unitId: 94
+                        unitName: Litres
+                      - unitId: 98
+                        unitName: Millilitres
+                      - unitId: 66
+                        unitName: Quarts
+                      - unitId: 72
+                        unitName: US Fluid Oz
+                    timeUnits:
+                      - unitId: 86
+                        unitName: Days
+                      - unitId: 89
+                        unitName: Hours
+                      - unitId: 90
+                        unitName: Kilometres
+                      - unitId: 97
+                        unitName: Miles
+                      - unitId: 99
+                        unitName: Minutes
+                      - unitId: 100
+                        unitName: Months
+                      - unitId: 65
+                        unitName: Quarters
+                      - unitId: 101
+                        unitName: Since Last Sample
+                      - unitId: 102
+                        unitName: Since Oil Drain
+                      - unitId: 103
+                        unitName: Weeks
+                      - unitId: 104
+                        unitName: Years
+                    topUpVolumeSinceUnits:
+                      - unitId: 86
+                        unitName: Days
+                      - unitId: 89
+                        unitName: Hours
+                      - unitId: 90
+                        unitName: Kilometres
+                      - unitId: 97
+                        unitName: Miles
+                      - unitId: 99
+                        unitName: Minutes
+                      - unitId: 100
+                        unitName: Months
+                      - unitId: 65
+                        unitName: Quarters
+                      - unitId: 101
+                        unitName: Since Last Sample
+                      - unitId: 102
+                        unitName: Since Oil Drain
+                      - unitId: 103
+                        unitName: Weeks
+                      - unitId: 104
+                        unitName: Years
+                    lubricants: null
+                    entityTypeId: 0
+                    entityId: null
+                    adHocSample: false
+                    drawnDuringOilDrain: false
+                    freshOilValueSample: false
+                    isSampleExists: false
+                    isSamplePreregistered: false
+                    isSampleValid: false
+                    equipmentComponentDescription:
+                      siteId: 5724
+                      siteName: ARIA HEALTH
+                      vesselName: ''
+                      vesselId: 0
+                      isSite: true
+                      isVessel: false
+                      customerId: 0
+                      componentDescription: Engine - Stationary Gas - ENGINE
+                      laNumber: 01415683/EGN01
+                      rlaNumber: null
+                      componentType: null
+                      componentTypeId: 486
+                      componentID: 1558231
+                      componentName: 01415683/EGN01 - 117 -  -  - ENGINE
+                      equipmentName: '117'
+                      equipmentDescription: '117'
+                      equipmentSubDescription: ''
+                      isOilConditionMonitoringEnabled: true
+                      defaultTestSuiteId: 0
+                      isComponentActive: true
+                      siteCode: '5724'
+                      vesselCode: ''
+                      imoNumber: ''
+                      entityType: 0
+                      sampleRegistrationScreenLayoutId: 1
+                      sampleRegistrationScreenLayoutName: Non-Engine
+                      laNumberEquipmentComponentDescription: null
+                      totalCount: 0
+                      entityTypeId: 0
+                      equipmentId: 1124490
+                    componentList: null
+                    customerId: 6574
+                    applicationType: 1
+                    uploads: null
+                    validationErrors: null
+                    cylinderComponents: null
+                    sampleStatus: null
+                    isComponentActive: true
+                    isLACodeExists: true
+                    isOCMEnabled: true
+                    componentId: 0
+                    labId: null
+                    purchaseOrderNo: null
+                    isActive: false
+                    isCreditBlocked: false
+                    legacySampleNumber: 0
+                    sampleRemarksList: null
+                    sampleDocumentCount: 0
+                    sampleCondition: null
+                    testSuiteType: null
+                    createdBy: null
+                    createdDate: '0001-01-01T00:00:00'
+                    dateRegistered: null
+                    sampleOnHoldReasonId: null
+                    customerName: 'AB ENERGY USA, LLC '
+                    countryId: 233
+                    sampleRegistrationScreenLayoutId: 1
+                    sampleRegistrationScreenLayoutName: null
+                    distributionChannelId: 2
+                    dateReceived: null
+                    dateTested: null
+                    dateRetested: null
+                    isCheckForPreRegisteredSample: false
+                    isDuplicateSampleNumber: false
+                    sampleModificationCategoryID: null
+                    isSampleModified: false
+                    maintenanceDescription: ''
+        '201':
+          description: |
+            The request has been fulfilled and has resulted in one or more new resources being created.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: |
+            The request could not be completed due to a conflict with the current state of the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /sampleNumberExists:
+    get:
+      description: 'User will be in possession of an oil testing sample label. This is the unique number on a sticker which is stuck to the sample bottles. The first step is to send this sample number, you will receive ae response confirming that it is valid, or not. A response will inform you whether the sample number is valid for use or not. If it is not valid, your user cannot proceed.'
+      parameters:
+        - name: sampleNumber
+          description: Sample Number to be passed as a Query Param.
+          required: true
+          in: query
+          schema:
+            description: Sample Number to be passed as a Query Param.
+            example: ABV123
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      responses:
+        '200':
+          description: If sample Number is already in use API will return response in JSON format.
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    sampleId: 0
+                    sampleNo: ''
+                    lubeAnalystCode: null
+                    lubeAnalystCodes: null
+                    dateDrawn: '2021-02-09T06:23:14.7452768+00:00'
+                    legacyRlasampleId: null
+                    legacyLasampleId: null
+                    equipmentLife: null
+                    equipmentLifeUnitId: 89
+                    lubricantLife: null
+                    lubricantLifeUnitId: 89
+                    topUpVolume: null
+                    topUpVolumeUnitId: 94
+                    topUpVolumeSinceId: 101
+                    sampleRemarks: null
+                    selectedSiteOrVessel: null
+                    siteVesselNames: null
+                    siteVesselCodes: null
+                    imoNumbers: null
+                    registeredLubricantId: 0
+                    registeredLubricant: null
+                    lubricantInUse: null
+                    selectedOptionAddOnTests: null
+                    optionAddOnTests: null
+                    fuelInUse: null
+                    selectedFuelInUseId: null
+                    fuelSulfurMasPercentage: null
+                    turbochargerCutout: false
+                    linerLifeHours: null
+                    feedRate: null
+                    engineLoadDuringSampling: null
+                    relativeHumidityAtmospheric: null
+                    ambientTemperatureAtmospheric: null
+                    cylinderOilConsumption: null
+                    jacketCoolingWaterOutTemp: null
+                    pistonCrownLifeHours: null
+                    pistonRingLifeHours: null
+                    fuelValveLifeHours: null
+                    preferredDateFormat: mm/dd/yyyy
+                    testSuiteList: null
+                    selectedTestSuiteId: null
+                    isPostPaidTestSuite: false
+                    isSelectedTestSuiteLALite: false
+                    selectedTestSuiteName: null
+                    liquidUnits:
+                      - unitId: 85
+                        unitName: Cubic cm
+                      - unitId: 87
+                        unitName: Gallons (UK)
+                      - unitId: 88
+                        unitName: Gallons (US)
+                      - unitId: 94
+                        unitName: Litres
+                      - unitId: 98
+                        unitName: Millilitres
+                      - unitId: 66
+                        unitName: Quarts
+                      - unitId: 72
+                        unitName: US Fluid Oz
+                    timeUnits:
+                      - unitId: 86
+                        unitName: Days
+                      - unitId: 89
+                        unitName: Hours
+                      - unitId: 90
+                        unitName: Kilometres
+                      - unitId: 97
+                        unitName: Miles
+                      - unitId: 99
+                        unitName: Minutes
+                      - unitId: 100
+                        unitName: Months
+                      - unitId: 65
+                        unitName: Quarters
+                      - unitId: 101
+                        unitName: Since Last Sample
+                      - unitId: 102
+                        unitName: Since Oil Drain
+                      - unitId: 103
+                        unitName: Weeks
+                      - unitId: 104
+                        unitName: Years
+                    topUpVolumeSinceUnits:
+                      - unitId: 86
+                        unitName: Days
+                      - unitId: 89
+                        unitName: Hours
+                      - unitId: 90
+                        unitName: Kilometres
+                      - unitId: 97
+                        unitName: Miles
+                      - unitId: 99
+                        unitName: Minutes
+                      - unitId: 100
+                        unitName: Months
+                      - unitId: 65
+                        unitName: Quarters
+                      - unitId: 101
+                        unitName: Since Last Sample
+                      - unitId: 102
+                        unitName: Since Oil Drain
+                      - unitId: 103
+                        unitName: Weeks
+                      - unitId: 104
+                        unitName: Years
+                    lubricants: null
+                    entityTypeId: 0
+                    entityId: null
+                    adHocSample: false
+                    drawnDuringOilDrain: false
+                    freshOilValueSample: false
+                    isSampleExists: false
+                    isSamplePreregistered: false
+                    isSampleValid: false
+                    equipmentComponentDescription: null
+                    componentList: null
+                    customerId: 3624
+                    applicationType: 0
+                    uploads: null
+                    validationErrors: null
+                    cylinderComponents: null
+                    sampleStatus: null
+                    isComponentActive: false
+                    isLACodeExists: false
+                    isOCMEnabled: false
+                    componentId: 0
+                    labId: null
+                    purchaseOrderNo: null
+                    isActive: false
+                    isCreditBlocked: false
+                    legacySampleNumber: 0
+                    sampleRemarksList: null
+                    sampleDocumentCount: 0
+                    sampleCondition: null
+                    testSuiteType: null
+                    createdBy: null
+                    createdDate: '0001-01-01T00:00:00'
+                    dateRegistered: null
+                    sampleOnHoldReasonId: null
+                    customerName: 'BRIGGS EQUIPMENT UK LTD '
+                    countryId: 0
+                    sampleRegistrationScreenLayoutId: null
+                    sampleRegistrationScreenLayoutName: null
+                    distributionChannelId: 2
+                    dateReceived: null
+                    dateTested: null
+                    dateRetested: null
+                    isCheckForPreRegisteredSample: false
+                    isDuplicateSampleNumber: false
+                    sampleModificationCategoryID: null
+                    isSampleModified: false
+                    maintenanceDescription: null
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /virtualizedhypenatedsitevessel:
+    post:
+      description: 'We need to know which machine the oil is from. There needs to be a record of the machine in the LubeAnalyst database for a sample to be pre-registered.In order to get the List of Sites/Vessels associated with the customer, call this API.'
+      parameters:
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                page: 1
+                pageSize: 40
+                skip: 0
+                take: 40
+                isAllRequired: false
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    resultData:
+                      - siteOrVesselId: 203
+                        entityType: 2
+                        siteOrVesselName: CLARKE ENERGY
+                        customerId: 5350
+                        customerName: 'CLARKE ENERGY LTD '
+                        distributionChannelId: 2
+                        siteOrVesselCode: '203'
+                        imoNumber: null
+                        hyphenatedSiteVesselCode: CLARKE ENERGY - 203
+                        purchaseOrderNumber: null
+                        countryId: 77
+                    count: 1
+        '201':
+          description: |
+            The request has been fulfilled and has resulted in one or more new resources being created.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: |
+            The request could not be completed due to a conflict with the current state of the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /virtualizedlacodeequipmentcomponent: {}
+  '/virtualizedlacodeequipmentcomponent/{entityId}':
+    parameters:
+      - name: entityId
+        required: true
+        in: path
+        schema:
+          type: string
+  '/virtualizedlacodeequipmentcomponent/{entityId}/{entityTypeId}':
+    parameters:
+      - name: entityId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: entityTypeId
+        required: true
+        in: path
+        schema:
+          type: string
+  '/virtualizedlacodeequipmentcomponent/{entityId}/{entityTypeId}/{customerId}':
+    post:
+      description: 'Now that your user has chosen which component has been oil sampled you must send the component ID to LubeAnalyst so that the LubeAnalyst API can return details about that sample when it is registered against this component.The API will send back to you a collection of fields which you should present to your user for them to enter information about this samples they are submitting.Examples include Lubricant in use in the machine at the time of oil sampling, lubricant life in time or distance. In the URL we pass entityId, entityTypeId and customerId.EntityId is Site/Vessel Id.EntityTypeId is Type of Entity, whether it’s a site or Vessel. For Site its 2 and for Vessel its 3.CustomerId is the id of the Customer.'
+      parameters:
+        - name: entityId
+          description: Entity Id to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Entity Id to be passed in URL.
+            example: '19066'
+            type: string
+        - name: entityTypeId
+          description: Entity Type to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Entity Type to be passed in URL.
+            example: '3'
+            type: string
+        - name: customerId
+          description: Customer Id to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Customer Id to be passed in URL.
+            example: '3821'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                page: 1
+                pageSize: 40
+                skip: 0
+                take: 40
+                isAllRequired: false
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example:
+                  message: Successful!
+        '201':
+          description: |
+            The request has been fulfilled and has resulted in one or more new resources being created.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: |
+            The request could not be completed due to a conflict with the current state of the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /webreport: {}
+  '/webreport/{sampleid}':
+    parameters:
+      - name: sampleid
+        required: true
+        in: path
+        schema:
+          type: string
+  '/webreport/{sampleid}/{resultcount}':
+    get:
+      description: This method is used to get the list of webreport
+      parameters:
+        - name: sampleid
+          description: Sample Id to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Sample Id to be passed in URL.
+            example: '12345'
+            type: string
+        - name: resultcount
+          description: Resultcount to be passed in URL.
+          required: true
+          in: path
+          schema:
+            description: Resultcount to be passed in URL.
+            example: '12345'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      responses:
+        '200':
+          description: 'This API will return a set of samples with their attributes including Sample Condition (Action, Attention, Normal) and Sample Status (To Be Tested, In Diagnosis).'
+          headers:
+            x-correlation-id:
+              description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+              required: true
+              schema:
+                description: The internal Mule correlation ID. Allows for traceability of requests across integration layer applications
+                example: 2ddbd94c-96c0-4aa2-a0fe-bb7603ebca7c
+                type: string
+          content:
+            application/json:
+              schema:
+                example:
+                  message: Successful!
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: |
+            The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /azureSearch/globalSearch: {}
+  '/azureSearch/globalSearch/{Index}':
+    post:
+      description: This API fetches you the List of all the Samples based on the search criteria you pass in the request Payload. It accepts request in a JSON format.
+      parameters:
+        - name: Index
+          description: Index will always be 2 for Sample.
+          required: true
+          in: path
+          schema:
+            description: Index will always be 2 for Sample.
+            example: '2'
+            type: string
+        - name: username
+          description: Details of user invoking this API.
+          required: false
+          in: header
+          schema:
+            description: Details of user invoking this API.
+            example: abc@xyzdev.onmicrosoft.com
+            type: string
+        - name: password
+          description: password for the user.
+          required: false
+          in: header
+          schema:
+            description: password for the user.
+            example: xxxxxxxxx
+            type: string
+        - name: LANG_TOKEN
+          description: SH Lang token.
+          required: false
+          in: header
+          schema:
+            description: SH Lang token.
+            example: ejihhd7e8hdjsjhdshdjhs
+            type: string
+        - name: authorization
+          description: Bearer OAuth 2.0 Token
+          required: true
+          in: header
+          schema:
+            description: Bearer OAuth 2.0 Token
+            example: Bearer hbGciOiJSUzI1NiIsImtpZCI6
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                sampleCondition:
+                  - All
+                sampleStatus: []
+                isActiveSelected: true
+                isInActiveSelected: false
+                laboratory: All
+                lubricantName: All
+                testSuiteName: All
+                searchText: ''
+                dateTypeId: 0
+                sortOrder: 1
+                sortColumn: DateDrawn
+                limit: 50
+                offset: 0
+      responses:
+        '200':
+          description: This API will return list of samples in JSON format.
+          content:
+            application/json:
+              schema:
+                example: Successfully Posted
+        '201':
+          description: |
+            The request has been fulfilled and has resulted in one or more new resources being created.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+        '400':
+          description: |
+            The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: |
+            The request has not been accepted because it lacks valid authentication credentials for the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: |
+            The server understood the request but refuses to authorize it.       
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '405':
+          description: |
+            The the request method is known by the server but is not supported by the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: |
+            The request could not be completed due to a conflict with the current state of the target resource.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: |
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '502':
+          description: |
+            The server, acting as a proxy or gateway service, was not able to get a valid or any response from the upstream server.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '504':
+          description: |
+            The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server (e.g. DNS) it needed to access in attempting to complete the request.
+          headers:
+            x-correlation-id:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    error:
+      description: Models the standard structure for an error response
+      x-amf-examples:
+        example_2:
+          error:
+            errorCode: METHOD NOT ALLOWED
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: Method 'DELETE' not supported for this resource
+            errorDescription: The requested resource does support the request method
+        amf_example_1:
+          error:
+            errorCode: UNAUTHORISED
+            errorDateTime: '2018-08-02T16:58:12.121Z'
+            errorDescription: Authorization failed for the request resource
+        example_1:
+          error:
+            errorCode: BAD REQUEST
+            errorDateTime: '2018-08-02T16:58:12.121Z'
+            errorMessage?: string
+            errorDescription: The required header 'x-correlation-id' was not provided
+        amf_example_2:
+          error:
+            errorCode: FORBIDDEN
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorDescription: Client does not have access to the selected resource
+        example_4:
+          error:
+            errorCode: CONFLICT
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The resource '/customer/12345678' could not be deleted
+            errorDescription: The requested resource could not be modified
+        amf_example_4:
+          error:
+            errorCode: GATEWAY TIMEOUT
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The downstream server did not return a response in an acceptable time.
+            errorDescription: Timeout has occurred during request to downstream service
+        example_0:
+          error:
+            errorCode: NOT FOUND
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The resource '/customer/12345678' could not be located
+            errorDescription: The requested resource does not exist
+        amf_example_3:
+          error:
+            errorCode: SERVER ERROR
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The request could not be completed due to an internal error. You may wish to try again
+            errorDescription: Internal server error
+        example_3:
+          error:
+            errorCode: BAD GATEWAY
+            errorDateTime: '2019-08-02T16:58:12.121Z'
+            errorMessage: The downstream server has returned an error message - Could not locate requested resource
+            errorDescription: Downstream service could not complete request
+      type: object
+      additionalProperties: true
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          additionalProperties: true
+          required:
+            - errorCode
+            - errorDateTime
+            - errorDescription
+          properties:
+            errorCode:
+              type: string
+            errorDateTime:
+              type: string
+              format: date-time
+            errorMessage:
+              type: string
+            errorDescription:
+              type: string
